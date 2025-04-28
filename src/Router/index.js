@@ -1,0 +1,38 @@
+import { createRouter,createWebHistory } from "vue-router";
+import Dashboard           from '../Pages/Dashboard.vue'
+import CustomerManagement  from '../Pages/CustomerManagement.vue'
+import OrderManagement     from '../Pages/OrderManagement.vue'
+import ProductManagement   from '../Pages/ProductManagement.vue'
+import Admins              from '../Pages/Admins.vue'      
+import Profile             from '../Pages/Profile.vue'
+import Errorpage           from '../Pages/Errorpage.vue'
+
+
+const routes=[{
+path:'/',
+component:Dashboard
+},{
+path:'/customer-management',
+component:CustomerManagement
+},{
+    path:'/order-management',
+    component:OrderManagement
+},{
+    path:'/product-management',
+    component:ProductManagement
+},{
+    path:'/admins',
+    component:Admins
+},{
+    path:'/profile',
+    component:Profile
+},{
+    path: '/:pathMatch(.*)*',
+    component: Errorpage
+    
+}]
+const router= createRouter({
+    history:createWebHistory(),
+    routes,
+})
+ export default router

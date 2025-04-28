@@ -9,7 +9,7 @@
         <v-container class=" d-flex flex-column justify-center align-center">
             <img :src="Logo" class="w-10 h-10 mb-4">
             <text-h1 class="mb-4 text-h6" style="color: #6A6A6A;">Login to your account </text-h1>
-            <img :src="adminLogin" class="w-50 h-50">   
+            <img :src="adminLogin" class="w-40 h-40">   
         </v-container>
         <v-text-field height="56" v-model="Email" :rules="nameRules" variant="outlined" label="Email" required></v-text-field>
         <v-text-field class="h-56" v-model="password" variant="outlined" label="Password"/>

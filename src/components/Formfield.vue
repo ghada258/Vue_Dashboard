@@ -7,7 +7,7 @@
       
       <v-card-text class="pa-0 ">
         <!-- First Name -->
-         <div class="d-flex flex-column gap-0.5 ">
+         <div class="d-flex flex-column  ">
         <label class="my-label text-body-1 font-weight-semibold  ">First Name</label>
         <v-text-field
           ref="firstName"
@@ -19,7 +19,7 @@
         />
     </div>
         <!-- Last Name -->
-        <div class="d-flex flex-column gap-2">
+        <div class="d-flex flex-column ">
         <label class="my-label text-body-1 font-weight-semibold">Last Name</label>
         <v-text-field
           ref="lastName"
@@ -32,7 +32,7 @@
         </div>
   
         <!-- Phone -->
-        <div class="d-flex flex-column gap-2">
+        <div class="d-flex flex-column ">
         <label class="my-label text-body-1 font-weight-semibold">Phone</label>
         <v-text-field
           ref="phone"
@@ -45,8 +45,8 @@
         </div>
   
         <!-- Email (disabled) -->
-        <div class="d-flex flex-column gap-2">
-        <label class="my-label text-body-1font-weight-semibold">Email</label>
+        <div class="d-flex flex-column ">
+        <label class="my-label text-body-1 font-weight-semibold">Email</label>
         <v-text-field
           ref="email"
           v-model="email"

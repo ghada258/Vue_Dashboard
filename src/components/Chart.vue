@@ -1,6 +1,6 @@
 <template>
     <v-container class="d-flex flex-column align-center justify-center hight-full ">
-      <div class="position-relative"style="width: 200px; height: 200px;">
+      <div class="position-relative"style="width: 170px; height: 170px;">
         <Doughnut :data="chartData" :options="chartOptions" />
         <div
           class="position-absolute font-weight-bold text-h-5 text-primary"style=" top: 50%; left: 50%; transform: translate(-50%, -50%)"  >

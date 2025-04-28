@@ -13,11 +13,11 @@ const props = defineProps({
   },
   icon1: {
     type:String,
-    required:true
+    required:false
   },
   icon2: {
     type:String,
-    required:true
+    required:false
   }
 })
 
@@ -42,8 +42,8 @@ const show_more ='/icons/more_details.svg'
           {{ item[col.name] }}
         </td>
         <td class="d-flex justify-center"  style="gap: 10px; " >
-          <v-icon style="padding-top: 25px; " class="text-tertiary">{{ icon1 }}</v-icon>
-          <v-icon style="padding-top: 25px;"  class="text-primary">{{ icon2 }}</v-icon> 
+          <v-icon v-if="icon1" style="padding-top: 25px; " class="text-tertiary">{{ icon1 }}</v-icon>
+          <v-icon  v-if="icon2" style="padding-top: 25px;"  class="text-primary">{{ icon2 }}</v-icon> 
         </td>
           
       </tr>

@@ -1,7 +1,6 @@
 <script setup>
 import Table from '../components/Table.vue';
 import { ref} from 'vue'; 
-import { mdiDotsHorizontalCircleOutline } from '@mdi/js';
 
 const Customercolumns = ref([
   { name: 'Customer Name', label: 'Customer Name'},

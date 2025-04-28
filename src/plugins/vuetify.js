@@ -20,7 +20,7 @@ export default createVuetify({
           secondary: '#F0F0F0',      // silver 100
           info:"#E3E3E3",//silver 200
           success:   '#F7F7F7',      // silver 50
-          tertiary:  '#D23616', //red 800
+          tertiary:  '#D23616', //red
 
         },
       },

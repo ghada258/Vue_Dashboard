@@ -1,52 +1,53 @@
 <script setup>
 import { ref} from 'vue'; 
+import { defineProps } from 'vue';
+
+const props = defineProps({
+  columns: {
+    type: Array,
+    required: true
+  },
+  tableData: {
+    type: Array,
+    required: true
+  },
+  icon1: {
+    type:String,
+    required:false
+  },
+  icon2: {
+    type:String,
+    required:false
+  }
+})
 
 const show_more ='/icons/more_details.svg'
-const columns = ref([
-  { name: 'Customer Name', label: 'Customer Name', align: 'left' },
-  { name: 'Phone Number', label: 'Phone Number', align: 'left' },
-  { name: 'Number Of Items', label: 'Number Of Items', align: 'left' },
-  { name: 'Status', label: 'Status', align: 'left' },
-  { name: 'Total Price', label: 'Total Price', align: 'left' },
-  { name: 'Action', label: 'Action', align: 'left' }
-]);
 
-
-const table_data = ref([
-  {
-    'Customer Name': 'John Doe',
-    'Phone Number': '123-456-7890',
-    'Number Of Items': 5,
-    'Status': 'Pending',
-    'Total Price': '100 USD',
-    'Action': "more"
-  },
-  {
-    'Customer Name': 'John Doe',
-    'Phone Number': '123-456-7890',
-    'Number Of Items': 5,
-    'Status': 'Pending',
-    'Total Price': '100 USD',
-    'Action': "more"
-  }
-]);
 </script>
 
 <template>
-  <v-table style="background-color:#818181; margin-top: 50px; ">
+  <div >
+  <v-table >
     <thead>
         <tr class="text-white" style="background-color: #0A2C47; border-radius: 10px;">
-        <th v-for="col in columns" :key="col.name" class="text-left">
+        <th v-for="col in columns" :key="col.name" class="text-center">
           {{ col.label }}
         </th>
-    </tr>
+        <th class="text-center">Action</th>
+      </tr>
     </thead>
-    <tbody >
-      <tr v-for="item in table_data" :key="item.name" style="background-color: white; border-radius: 10px; margin-bottom: 5px; overflow: hidden;">
-        <td v-for="col in columns" :key="col.name" style=" padding: 10px;">
+    <tbody>
+      <tr v-for="item in tableData" :key="item.name">
+        <td v-for="col in columns" :key="col.name"class="text-center" >
           {{ item[col.name] }}
         </td>
+        <td class="d-flex justify-center"  style="gap: 10px; " >
+          <v-icon v-if="icon1" style="padding-top: 25px; " class="text-tertiary">{{ icon1 }}</v-icon>
+          <v-icon  v-if="icon2" style="padding-top: 25px;"  class="text-primary">{{ icon2 }}</v-icon> 
+        </td>
+          
       </tr>
     </tbody>
   </v-table>
+</div>
 </template>

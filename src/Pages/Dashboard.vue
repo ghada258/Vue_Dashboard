@@ -6,6 +6,7 @@ import Card from '../components/Card.vue'
 <template>
   <div  >
    <Card/>
+   
   </div>
 </template>
 

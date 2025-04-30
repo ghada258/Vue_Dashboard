@@ -1,5 +1,5 @@
 <template>
-   <v-btn  color="primary" height="56" :width="width" class="d-flex flex-row justify-center align-center text-h5  font-weight-semibold text-success">
+   <v-btn  color="primary" height="48" :width="width" class="d-flex flex-row justify-center align-center text-h6  font-weight-semibold text-success">
     <v-icon v-if="icon" color="success" size="32" class="pr-4" >
         {{ icon }}
     </v-icon>

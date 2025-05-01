@@ -1,5 +1,4 @@
 <template >
-  <v-card >
     <v-layout>
       <v-navigation-drawer expand-on-hover rail color="primary"  class=" py-8  app-drawer " >
         <div class="iconright-section">
@@ -97,7 +96,6 @@
       </v-navigation-drawer>
 
     </v-layout>
-  </v-card>
 </template>
 
 <script setup>

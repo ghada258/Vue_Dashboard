@@ -1,13 +1,7 @@
 <template>
-
-        <v-pagination :length="4"></v-pagination>
-
+  <v-pagination :length="4"></v-pagination>
 </template>
 
-<script setup>
-   
-</script>
+<script setup></script>
 
-<style lang="scss" scoped>
-
-</style>
+<style lang="scss" scoped></style>

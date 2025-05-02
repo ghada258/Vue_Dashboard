@@ -20,12 +20,14 @@ export default createVuetify({
           secondary: '#F0F0F0', // silver 100
           info:      '#E3E3E3', // silver 200
           success:   '#F7F7F7', // silver 50
-          error:  '#D23616', // red
 //  الوان المستخدمه في الجدول 
-          accent:    '#6DC4FE', // لبني فاتح  inactive bg
+error:  '#D23616', // red
+
+          accent:    '',
           warning:   '#29D5EF', // لبني غامق vip bg
-          neutral:   '#333333', // ابيض text-black
+          neutral:   '#333333', // text-black
           lightGray: '#007DC3', // لبني  active bg
+          blocked:'#818181'//اللون بتاع ال  inactibve
         },
       },
     },

@@ -12,6 +12,8 @@
 import Formfield from '../components/Formfield.vue';
 import Editprofilephoto from '../components/Editprofilephoto.vue';
 import DropList from '../components/DropList.vue';
+import Pagetitle from '../components/Pagetitle.vue';
+import Primarybutton from '../components/Primarybutton.vue';
 
 
 
@@ -21,20 +23,22 @@ import DropList from '../components/DropList.vue';
 
 </style>
 <template>
-<div class="contentTitle">
-  <v-item-title class="text-primary ">Admin</v-item-title>
+<div class="contentTitle bg-success">
+  <Pagetitle title="Profile"/>
 </div>
 
-  <div class=" content">
+  <div class=" content bg-success  " >
  
     <v-row >
-      <v-col order="6" cols="4" >
-        <v-sheet class=" pa-0 ma-0 ">
+      <v-col order="6" cols="5 " >
+        <v-sheet class=" pa-0 ma-0  bg-success ">
           <Formfield/>
+          <Primarybutton title="Update Change" style="height: 56px;width: 400px; margin-top: 24px; margin-bottom: 20px;"/>
+
         </v-sheet>
       </v-col>
       <v-col order="12"  cols="5" >
-        <v-sheet class=" ma-2 pa-0">
+        <v-sheet class="  pa-0">
        <DropList/>
         </v-sheet>
       </v-col>
@@ -48,10 +52,10 @@ import DropList from '../components/DropList.vue';
 </template>
 <style scoped lang="scss">
 .content{
-  margin: 0px 88px;
+  padding: 0px 88px;
 
 }
 .contentTitle{
-  margin: 22px 88px 22px 88px ;
+  padding: 22px 88px 22px 88px ;
 }
 </style>

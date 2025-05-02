@@ -1,12 +1,16 @@
-<template>
-    <div class="mt-4  " style="margin-left: 88px; margin-right: 88px;">
+ 
+ <template>
+ 
+  
+  <div class="bg-success">
+    <div class="pt-4   " style="padding-left: 88px; padding-right: 88px;  height:100vh;">
 
    
   <div
       class=" mb-4 "
     >
     
-          <v-sheet width="100%" class="text-start" >
+          <v-sheet  class="text-start  bg-success " >
             <slot name="partone">TITLE ONE PART</slot>
           </v-sheet>
 
@@ -21,28 +25,28 @@
 
     </div>
     <div
-      class=" mb-4"
+      class=" mb-1"
     >
     
-          <v-sheet width="100%" class="text-start" >
+          <v-sheet width="100%"  style="height: 470px;" class="text-start bg-success" >
             <slot name="partthree">TITLE THREE PART</slot>
           </v-sheet>
 
     </div>
     <div
-      class="mb-4 "
+      class="pb-4"
     >
     
-          <v-sheet width="100%" class="text-start" >
+          <v-sheet  class="text-start bg-success " >
             <slot name="partfour">TITLE FOUR PART</slot>
           </v-sheet>
 
     </div>
 </div>
+</div>
 </template>
 
 <script setup>
-  
 </script>
 
 <style lang="scss" scoped>

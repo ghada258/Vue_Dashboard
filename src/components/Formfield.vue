@@ -1,76 +1,6 @@
-<template>
-   
-       
 
-    
-    <div ref="form" >
-      
-      <v-card-text class="pa-0 ">
-        <!-- First Name -->
-         <div class="d-flex flex-column  ">
-        <label class="my-label text-body-1 font-weight-semibold  ">First Name</label>
-        <v-text-field
-          ref="firstName"
-          v-model="firstName"
-          :rules="[() => !!firstName || 'This field is required']"
-          variant="outlined"
-          placeholder="Enter Your First Name"
-          required
-        />
-    </div>
-        <!-- Last Name -->
-        <div class="d-flex flex-column ">
-        <label class="my-label text-body-1 font-weight-semibold">Last Name</label>
-        <v-text-field
-          ref="lastName"
-          v-model="lastName"
-          :rules="[() => !!lastName || 'This field is required']"
-          variant="outlined"
-          placeholder="Enter Your Last Name"
-          required
-        />
-        </div>
-  
-        <!-- Phone -->
-        <div class="d-flex flex-column ">
-        <label class="my-label text-body-1 font-weight-semibold">Phone</label>
-        <v-text-field
-          ref="phone"
-          v-model="phone"
-          :rules="[() => !!phone || 'This field is required']"
-          variant="outlined"
-          placeholder="Enter Your Phone"
-          required
-        />
-        </div>
-  
-        <!-- Email (disabled) -->
-        <div class="d-flex flex-column ">
-        <label class="my-label text-body-1 font-weight-semibold">Email</label>
-        <v-text-field
-          ref="email"
-          v-model="email"
-          variant="outlined"
-          placeholder="Enter Your Email"
-          disabled
-        />
-        </div>
-      </v-card-text>
-  
-  
-  
-        <Primarybutton title="Update Change" width="100vw"  />
-    
-        <v-spacer />
-
-      </div>
-   
-  
-
-  </template>
   
   <script setup>
-import Secondarybutton from '../components/Secondarybutton.vue';
 import Primarybutton from '../components/Primarybutton.vue';
 
 
@@ -81,6 +11,55 @@ import Primarybutton from '../components/Primarybutton.vue';
   }
   </style>
 
-  
+<template>
+  <v-form class=" d-flex flex-column bg-success" style="gap:24px;"> 
+    <label for="firstname" class="font-weight-semibold  text-neutral text-body-1">First Name</label>
+    <v-text-field
+    id="firstname" 
+    style="height: 56px;width: 400px;"
+          ref="firstName"
+          v-model="firstName"
+          :rules="[() => !!firstName || 'This field is required']"
+          variant="outlined"
+          placeholder="Enter Your First Name"
+          required
+        />
+
+    <label for="lastName" class="font-weight-semibold text-neutral text-body-1">Last Name</label>
+    <v-text-field
+          ref="lastName"
+          style="height: 56px;width: 400px;"
+          v-model="lastName"
+          :rules="[() => !!lastName || 'This field is required']"
+          variant="outlined"
+          placeholder="Enter Your Last Name"
+          required
+        />
+    <label for="Phone" class="font-weight-semibold text- text-body-1">Phone</label>
+    <v-text-field
+          ref="phone"
+          v-model="phone"
+          :rules="[() => !!phone || 'This field is required']"
+          variant="outlined"
+          placeholder="Enter Your Phone"
+          required
+          style="height: 56px;width: 400px;"
+          />
+        <label for="Email" class="font-weight-semibold text-neutral text-body-1">Email</label>
+        <v-text-field
+          ref="email"
+          v-model="email"
+          variant="outlined"
+          placeholder="Enter Your Email"
+          disabled
+          style="height: 56px;width: 400px;"
+          />
+  </v-form>
+
+
+
+</template>
+
+
 
   

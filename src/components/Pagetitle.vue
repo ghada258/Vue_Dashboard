@@ -1,5 +1,5 @@
 <template>
-<v-title class="text-primary font-weight-semibold "style="font-size: 32px;">{{ title }}</v-title>
+<v-title class=" full-width text-primary bg-success font-weight-semibold  cursor-default"style="font-size: 32px;">{{ title }}</v-title>
 </template>
 
 <script setup>

@@ -2,101 +2,53 @@
 <script setup>
 import Templatepage from '../components/Templatepage.vue';
 import Table from '../components/Table.vue';
-import { ref} from 'vue'; 
+import { computed, ref, watch} from 'vue'; 
 import Paginationtable from '../components/Paginationtable.vue';
 import Pagetitle from '../components/Pagetitle.vue';
+import Filter from '../components/Filter.vue';
+import { useOrder } from '../Store/OrderStore';
+import Search from '../components/Search.vue';
+import {useFilterCode} from '../Store/Searchcode'
+import {pagination} from '../Store/Pagination'
+const searchterm=ref('')
+const Filterterm=ref('')
+const ordertStore=useOrder()
+const filteroption = ref([
+{ name: '', title: 'All' },
+  { name: 'Arrived',  title: 'Arrived' },
+  { name: 'Canceled', title: 'Canceled' },
+])
 
-const Customercolumns = ref([
-  { name: 'Customer Name', label: 'Customer Name'},
-  { name: 'Phone Number', label: 'Phone Number'},
-  { name: 'Number of Items', label: 'Number of Items' },
-  { name: 'Total Price', label: 'Total Price' },
-  { name: 'Status', label: 'Status' },
-]);
+const field=['Status','Customer_Name','Phone_Number']
+const filterorder=useFilterCode(ordertStore.Order_data,searchterm,field,Filterterm)
 
-
-const Customer_data = ref([
-  {
-    'Customer Name': 'Mohamed Ahmed',
-    'Phone Number': '123-456-7890',
-    'Number of Items': '1',
-    'Total Price':'450',
-    'Status': 'Pending',
-
-  },
-  {
-    'Customer Name': 'Mohamed Ahmed',
-    'Phone Number': '123-456-7890',
-    'Number of Items': '1',
-    'Total Price':'450',
-    'Status': 'Pending',
-
-  },
-  {
-    'Customer Name': 'Mohamed Ahmed',
-    'Phone Number': '123-456-7890',
-    'Number of Items': '1',
-    'Total Price':'450',
-    'Status': 'Pending',
-
-  },
-  {
-    'Customer Name': 'Mohamed Ahmed',
-    'Phone Number': '123-456-7890',
-    'Number of Items': '1',
-    'Total Price':'450',
-    'Status': 'Pending',
-
-  },
-  {
-    'Customer Name': 'Mohamed Ahmed',
-    'Phone Number': '123-456-7890',
-    'Number of Items': '1',
-    'Total Price':'450',
-    'Status': 'Pending',
-
-  },
-  {
-    'Customer Name': 'Mohamed Ahmed',
-    'Phone Number': '123-456-7890',
-    'Number of Items': '1',
-    'Total Price':'450',
-    'Status': 'Pending',
-
-  },
-  {
-    'Customer Name': 'Mohamed Ahmed',
-    'Phone Number': '123-456-7890',
-    'Number of Items': '1',
-    'Total Price':'450',
-    'Status': 'Pending',
-
-  },
-  {
-    'Customer Name': 'Mohamed Ahmed',
-    'Phone Number': '123-456-7890',
-    'Number of Items': '1',
-    'Total Price':'450',
-    'Status': 'Pending',
-
-  }
-]);
+const paginationdata=pagination(filterorder,8)
+//tommorrow
+watch([searchterm,Filterterm],()=>{
+  paginationdata.page.value = 1;
+})
+ 
 </script>
 
 <template>
-  <div class="text-center">
+  <div class="text-center ">
     <Templatepage>
         <template #partone>
             <Pagetitle title="Order Management"/>
         </template>
         <template #parttwo>
-            <v-icon size="32" color="primary">mdi-filter-variant</v-icon><span class="font-weight-semibol text-h5 pl-1 text-primary">Filter</span>
-        </template>
+          
+            <div class="d-flex bg-success">
+              <Filter :List="filteroption" v-model="Filterterm" />
+              <Search v-model="searchterm" label='Search for order...'/>
+        </div>
+
+          </template>
       <template #partthree>
-        <Table :columns="Customercolumns" :tableData="Customer_data" icon2="mdi-dots-horizontal-circle-outline"/>
+        <Table :columns="ordertStore.OrdercolumnsName" :tableData="paginationdata.paginationitem.value"nofilterdata="/no-order.svg" titlenodata=" No order match your search....."/>
       </template>
       <template #partfour>
-        <Paginationtable/>
+        <Paginationtable :totalpage="paginationdata.totalpage.value" v-model:page="paginationdata.page.value" :itemperpage="paginationdata.itemperpage"/>
       </template>
     </Templatepage>
   </div>

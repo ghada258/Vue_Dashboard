@@ -10,9 +10,16 @@ import AddProduct from "./Pages/AddProduct.vue";
 </script>
 
 <template>
+
  <!-- <Login/> -->
   <!-- <Admins/>-->
   <Sidebar />
+  <RouterView></RouterView>
+
+
+
+
+
   <RouterView/>
    <!-- <AddProduct /> -->
 </template>

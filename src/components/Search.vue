@@ -3,33 +3,45 @@
       class="mx-auto"
     style="width: 600px;    
     "
-    
     >
     
         <v-text-field
           :loading="loading"
+          :model-value="modelValue"
              density="comfortable"
           append-inner-icon="mdi-magnify"
-          label="Search templates"
+          :label='label'
           variant="solo"
           hide-details
           single-line
-          @click:append-inner="onClick"
+          @input="onInput"
+
         ></v-text-field>
     </div>
  
   </template>
   <script setup>
-    import { ref } from 'vue'
   
-    const loaded = ref(false)
-    const loading = ref(false)
-  
-    function onClick () {
-      loading.value = true
-      setTimeout(() => {
-        loading.value = false
-        loaded.value = true
-      }, 2000)
-    }
+
+   const emit= defineEmits(['update:modelValue']);  
+function onInput(e){
+  emit('update:modelValue', e.target.value);
+
+}
+const props=defineProps({
+  label:{
+    type:String,
+    required:true
+  },modelValue:{
+    type:String,
+    required:true
+
+
+  }
+
+})
+
+   
+
+
   </script>

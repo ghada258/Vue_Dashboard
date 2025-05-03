@@ -5,7 +5,6 @@ import DropList from '../components/DropList.vue';
 import AddTemplate from '../components/AddTemplate.vue';
 import Pagetitle from '../components/Pagetitle.vue';
 import AddProductForm from '../components/AddProductForm.vue';
-import Catgory_subCategory from '../components/Catgory_subCategory.vue';
 import Price_shiping from '../components/Price_shiping.vue';
 
 </script>

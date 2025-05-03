@@ -7,6 +7,7 @@ import Admins              from '../Pages/Admins.vue'
 import Profile             from '../Pages/Profile.vue'
 import Errorpage           from '../Pages/Errorpage.vue'
 import AddProduct from "../Pages/AddProduct.vue";
+import OrderDetails from "../Pages/OrderDetails.vue";
 
 
 const routes=[{
@@ -30,6 +31,9 @@ component:CustomerManagement
 },{
     path:'/AddProduct',
     component:AddProduct
+},{
+    path:'/OrderDetails',
+    component:OrderDetails
 },{
     path: '/:pathMatch(.*)*',
     component: Errorpage

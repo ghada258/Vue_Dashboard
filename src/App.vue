@@ -5,6 +5,8 @@ import Card from './components/Card.vue';
 import Login from './Pages/Login.vue'
 import Table from './components/Table.vue';
 import AddProduct from "./Pages/AddProduct.vue";
+import OrderDetails from "./Pages/OrderDetails.vue";
+import AllOrders from "./components/AllOrders.vue";
 </script>
 
 <template>
@@ -12,7 +14,8 @@ import AddProduct from "./Pages/AddProduct.vue";
   <!-- <Admins/>-->
   <Sidebar />
   <RouterView/>
-  
+   <!-- <OrderDetails/> -->
+    <!-- <AllOrders/> -->
 </template>
 <style lang="scss" scoped>
 

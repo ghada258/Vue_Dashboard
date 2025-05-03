@@ -11,8 +11,8 @@ import AddProduct from "./Pages/AddProduct.vue";
  <!-- <Login/> -->
   <!-- <Admins/>-->
   <Sidebar />
-  <!-- <RouterView/> -->
-   <AddProduct />
+  <RouterView/>
+  
 </template>
 <style lang="scss" scoped>
 

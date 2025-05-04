@@ -4,10 +4,6 @@ import Chart from '../components/Chart.vue';
 import Pagetitle from '../components/Pagetitle.vue';
 </script>
 
-
-
-
-
 <template>
 
 <div class="bg-success">

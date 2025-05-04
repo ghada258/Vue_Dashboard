@@ -43,7 +43,7 @@ watch([searchterm,Filterterm],()=>{
             <div class="d-flex bg-success">
               <Filter :List="filteroption" v-model="Filterterm" />
             <Search v-model="searchterm" label='Search for products...'/>
-            <Primarybutton icon="mdi-plus" title="Add New Product"/>
+            <Primarybutton icon="mdi-plus" title="Add New Product"  to="/AddProduct"/>
         </div>
         </template>
       <template #partthree>

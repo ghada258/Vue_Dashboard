@@ -37,7 +37,8 @@ required:true
   }
 });
 // const clonedata=ref(props.tableData.map(r=>({...r})))
-const selectrole = ["Customer", "Admin"];
+const selectrole = ["Pendding", "arrived","canceled"];
+
 
 </script>
 
@@ -93,12 +94,12 @@ const selectrole = ["Customer", "Admin"];
                 {{ item[col.name] }}
               </span>
             </template>
-            <template v-else-if="col.name === 'Role'">
-              <div class="d-flex justify-center bg-lightGray rounded-lg  ">
+            <template v-else-if="col.name === 'Set Status'">
+              <div class="d-flex justify-center   rounded-lg  ">
                 <v-select
                 v-model="item.Role"
                 :items="selectrole"
-                label="To"
+                variant="outlined"
                 hide-details
                 hide-no-data
                 single-line

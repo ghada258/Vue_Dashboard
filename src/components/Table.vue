@@ -1,6 +1,7 @@
 <script setup>
 import { ref } from "vue";
 import { defineProps } from "vue";
+import { RouterLink } from "vue-router";
 
 
 const props = defineProps({
@@ -37,7 +38,8 @@ required:true
   }
 });
 // const clonedata=ref(props.tableData.map(r=>({...r})))
-const selectrole = ["Customer", "Admin"];
+const selectrole = ["Pendding", "arrived","canceled"];
+
 
 </script>
 
@@ -93,12 +95,12 @@ const selectrole = ["Customer", "Admin"];
                 {{ item[col.name] }}
               </span>
             </template>
-            <template v-else-if="col.name === 'Role'">
-              <div class="d-flex justify-center bg-lightGray rounded-lg  ">
+            <template v-else-if="col.name === 'Set Status'">
+              <div class="d-flex justify-center   rounded-lg  ">
                 <v-select
                 v-model="item.Role"
                 :items="selectrole"
-                label="To"
+                variant="outlined"
                 hide-details
                 hide-no-data
                 single-line
@@ -112,21 +114,27 @@ const selectrole = ["Customer", "Admin"];
              
             </template>
             <template v-else-if="col.name==='Orders'">
-              
-              <button >📦 View Orders</button>
+              <RouterLink to="/AllOrders" >
+                <button  >📦 View Orders</button>
+              </RouterLink>
             </template>
             <template v-else-if="col.name==='Order'">
-              
+              <RouterLink to="/OrderDetails" >
+
               <button >📦  Details</button>
+              </RouterLink >
+
             </template>
             <template v-else-if="col.name==='Total Price'||col.name==='Price'">
               {{item[col.name]  }}<span> EGP</span>
             </template>
             <!--  -->
-            <template v-else-if="col.name==='Image'">
+            <template v-else-if="col.name==='images'">
               <v-avatar size="80"   rounded="0"
               >
-                <img :src="item[col.name]" style="border-radius: 8px; width: 100%; height: 100%; object-fit: contain;" 
+                <img 
+                :src="`http://localhost:3000${item[col.name][0]}`"
+                style="border-radius: 8px; width: 100%; height: 100%; object-fit: contain;" 
                 alt="image"/>
               </v-avatar>
             </template>
@@ -161,7 +169,9 @@ const selectrole = ["Customer", "Admin"];
             </v-tooltip>
           </div>
             </template>
-    
+            <template v-else-if="col.name==='category'">
+              {{ item[col.name].name }}
+            </template>
             <template v-else>
               {{ item[col.name] }}
             </template>

@@ -102,7 +102,7 @@
             <Order/>
             <Order/>
         </v-card-text>
-      </div>
+      </div> 
   <!-- pricing and stock -->
   <div ref="form" width="100%" class="text-start py-2 pl-5 pr-5 rounded-lg" style="border:solid 1px #80CCF9">
     <v-card-text class="pa-0 d-flex flex-column">

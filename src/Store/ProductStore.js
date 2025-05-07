@@ -1,92 +1,37 @@
-import { defineStore } from 'pinia'
+import axios from 'axios';
+import { defineStore } from 'pinia';
 import { ref } from 'vue';
 export const useProductStore = defineStore('product', () => {
-const PoducrcolumnsName = ref([
-    { name: 'Id', label: 'Id' },
-    { name: 'Image', label: 'Image' },
-    { name: 'Product_Name', label: 'Product Name' },
-    { name: 'Category', label: 'Category' },
-    { name: 'Brand', label: 'Brand' },
-    { name: 'Stock', label: 'Stock' },
-    { name: 'Price', label: 'Price' },
+  const PoducrcolumnsName = ref([
+    { name: '_id', label: 'Id' },
+    { name: 'images', label: 'Image' },
+    { name: 'name', label: 'Product Name' },
+    { name: 'category', label: 'Category' },
+    { name: 'brand', label: 'Brand' },
+    { name: 'inStock', label: 'Stock' },
+    { name: 'price', label: 'Price' },
     { name: 'Action', label: 'Action' },
   ]);
-  
-  const Product_data = ref([
-    {
-      'Id': 1,
-      'Image': '/801453e0c5024ac15fc4b4caecaebb1e.jpg',
-      'Product_Name': 'Floral Dress',
-      'Category': 'Women',
-      'Brand': 'Zara',
-      'Stock': 25,
-      'Price':150
-    },
-    {
-      'Id': 2,
-      'Image': '/801453e0c5024ac15fc4b4caecaebb1e.jpg',
-      'Product_Name':'Men T-Shirt',
-      'Category': 'Men',
-      'Brand': 'H&M',
-      'Stock': 40,
-      'Price': 90
-    },
-    {
-      'Id': 3,
-      'Image': '/801453e0c5024ac15fc4b4caecaebb1e.jpg',
-      'Product_Name':'Kids Jacket',
-      'Category': 'Kids',
-      'Brand': 'Gap',
-      'Stock': 15,
-      'Price': 200
-    },
-    {
-      'Id': 4,
-      'Image': '/801453e0c5024ac15fc4b4caecaebb1e.jpg',
-      'Product_Name': 'Sneakers',
-      'Category': 'Unisex',
-      'Brand': 'Nike',
-      'Stock': 30,
-      'Price': 300
-    },
-    {
-      'Id': 5,
-      'Image': '/801453e0c5024ac15fc4b4caecaebb1e.jpg',
-      'Product_Name': 'Handbag',
-      'Category': 'Women',
-      'Brand': 'Gucci',
-      'Stock': 10,
-      'Price': 500
-    },
-    {
-      'Id': 6,
-      'Image': '/801453e0c5024ac15fc4b4caecaebb1e.jpg',
-      'Product_Name': 'Handbag',
-      'Category': 'Women',
-      'Brand': 'Gucci',
-      'Stock': 10,
-      'Price': 500
-    },
-    {
-      'Id': 7,
-      'Image': '/801453e0c5024ac15fc4b4caecaebb1e.jpg',
-      'Product_Name': 'Handbag',
-      'Category': 'Women',
-      'Brand': 'Gucci',
-      'Stock': 10,
-      'Price': 500
-    },
-    {
-      'Id': 8,
-      'Image': '/801453e0c5024ac15fc4b4caecaebb1e.jpg',
-      'Product_Name': 'Handbag',
-      'Category': 'Women',
-      'Brand': 'Gucci',
-      'Stock': 10,
-      'Price': 500
-    }
-  ]);
-  
-return {PoducrcolumnsName,Product_data}
 
-})
+  const Product_data = ref([]);
+  const fetchproduct = async () => {
+    const response = await axios.get('/api/products');
+    Product_data.value = response.data.data.products;
+  };
+  const addproduct = async (product) => {
+      const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InNhbWFzaW1vQGdtYWlsLmNvbSIsImlkIjoiNjgxNmFlZTdhYjE3ZTFkZGJjZWFlZGM4Iiwicm9sZSI6Im1hbmdlciIsImlhdCI6MTc0NjYyNzk4MSwiZXhwIjoxNzQ2ODAwNzgxfQ.Dla9CdBspmv9T9vpz0D7seuC--7b6QTNtveaIvLm9p8"
+    const response = await axios.post('/api/products', product,{
+    headers: {
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'multipart/form-data'
+    }})
+    if (response.status === 201) {
+      {
+        console.log('Product added successfully');
+        console.log(response.data);
+        Product_data.value.push(response.data.product);
+      }
+    }
+  };
+  return { PoducrcolumnsName, Product_data, fetchproduct, addproduct };
+});

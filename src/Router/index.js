@@ -6,6 +6,9 @@ import ProductManagement   from '../Pages/ProductManagement.vue'
 import Admins              from '../Pages/Admins.vue'      
 import Profile             from '../Pages/Profile.vue'
 import Errorpage           from '../Pages/Errorpage.vue'
+import AddProduct from "../Pages/AddProduct.vue";
+import OrderDetails from "../Pages/OrderDetails.vue";
+import AllOrders from "../components/AllOrders.vue";
 
 
 const routes=[{
@@ -27,10 +30,21 @@ component:CustomerManagement
     path:'/profile',
     component:Profile
 },{
+    path:'/AddProduct',
+    component:AddProduct
+},{
+    path:'/OrderDetails',
+    component:OrderDetails
+},{
+    path:'/AllOrders',
+    component:AllOrders
+},
+{
     path: '/:pathMatch(.*)*',
     component: Errorpage
     
-}]
+}
+]
 const router= createRouter({
     history:createWebHistory(),
     routes,

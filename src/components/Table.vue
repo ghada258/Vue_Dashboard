@@ -1,6 +1,7 @@
 <script setup>
 import { ref } from "vue";
 import { defineProps } from "vue";
+import { RouterLink } from "vue-router";
 
 
 const props = defineProps({
@@ -113,21 +114,27 @@ const selectrole = ["Pendding", "arrived","canceled"];
              
             </template>
             <template v-else-if="col.name==='Orders'">
-              
-              <button >📦 View Orders</button>
+              <RouterLink to="/AllOrders" >
+                <button  >📦 View Orders</button>
+              </RouterLink>
             </template>
             <template v-else-if="col.name==='Order'">
-              
+              <RouterLink to="/OrderDetails" >
+
               <button >📦  Details</button>
+              </RouterLink >
+
             </template>
             <template v-else-if="col.name==='Total Price'||col.name==='Price'">
               {{item[col.name]  }}<span> EGP</span>
             </template>
             <!--  -->
-            <template v-else-if="col.name==='Image'">
+            <template v-else-if="col.name==='images'">
               <v-avatar size="80"   rounded="0"
               >
-                <img :src="item[col.name]" style="border-radius: 8px; width: 100%; height: 100%; object-fit: contain;" 
+                <img 
+                :src="`http://localhost:3000${item[col.name][0]}`"
+                style="border-radius: 8px; width: 100%; height: 100%; object-fit: contain;" 
                 alt="image"/>
               </v-avatar>
             </template>
@@ -162,7 +169,9 @@ const selectrole = ["Pendding", "arrived","canceled"];
             </v-tooltip>
           </div>
             </template>
-    
+            <template v-else-if="col.name==='category'">
+              {{ item[col.name].name }}
+            </template>
             <template v-else>
               {{ item[col.name] }}
             </template>

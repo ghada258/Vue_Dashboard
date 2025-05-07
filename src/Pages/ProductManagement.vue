@@ -1,7 +1,7 @@
 <!-- Parent.vue -->
 <script setup>
 import Templatepage from '../components/Templatepage.vue';
-import { computed, ref, watch} from 'vue'; 
+import { computed, onBeforeMount, ref, watch} from 'vue'; 
 import Paginationtable from '../components/Paginationtable.vue';
 import Pagetitle from '../components/Pagetitle.vue';
 import Primarybutton from '../components/Primarybutton.vue';
@@ -24,13 +24,17 @@ const filteroption = ref([
   {name:'Kids',title:'Kids'},
  
 ]);
-const fields = ['Product_Name', 'Category', 'Brand']
+const fields = ['name', 'category', 'brand']
 
 const filterdata=useFilterCode(productStore.Product_data,searchterm,fields,Filterterm)
 const paginationdata=pagination(filterdata,5)
 watch([searchterm,Filterterm],()=>{
   paginationdata.page.value=1
 })
+    onBeforeMount(()=>
+    productStore.fetchproduct()
+        
+    )
 </script>
 
 <template>
@@ -43,7 +47,7 @@ watch([searchterm,Filterterm],()=>{
             <div class="d-flex bg-success">
               <Filter :List="filteroption" v-model="Filterterm" />
             <Search v-model="searchterm" label='Search for products...'/>
-            <Primarybutton icon="mdi-plus" title="Add New Product"/>
+            <Primarybutton icon="mdi-plus" title="Add New Product"  to="/AddProduct"/>
         </div>
         </template>
       <template #partthree>

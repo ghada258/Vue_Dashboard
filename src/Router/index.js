@@ -9,6 +9,7 @@ import Errorpage           from '../Pages/Errorpage.vue'
 import AddProduct from "../Pages/AddProduct.vue";
 import OrderDetails from "../Pages/OrderDetails.vue";
 import AllOrders from "../components/AllOrders.vue";
+import AddProductForm from "../components/AddProductForm.vue";
 
 
 const routes=[{
@@ -22,7 +23,9 @@ component:CustomerManagement
     component:OrderManagement
 },{
     path:'/product-management',
+    name:'ProductManagement',
     component:ProductManagement
+
 },{
     path:'/admins',
     component:Admins
@@ -31,13 +34,23 @@ component:CustomerManagement
     component:Profile
 },{
     path:'/AddProduct',
-    component:AddProduct
+    name:'AddProduct',
+    component:AddProduct,
+    props:true
+
 },{
     path:'/OrderDetails',
     component:OrderDetails
 },{
     path:'/AllOrders',
     component:AllOrders
+},{
+path:'/EditProduct/:id',
+name:'EditProduct',
+component:AddProductForm,
+props:true
+},
+{
 },
 {
     path: '/:pathMatch(.*)*',

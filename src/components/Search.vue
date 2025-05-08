@@ -25,6 +25,7 @@
 
    const emit= defineEmits(['update:modelValue']);  
 function onInput(e){
+console.log(e.target.value)  
   emit('update:modelValue', e.target.value);
 
 }

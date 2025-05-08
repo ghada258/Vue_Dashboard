@@ -26,6 +26,10 @@
   </div>
   </template>
 <script setup>
+import {useProductStore} from '../Store/ProductStore'
+const productStore=useProductStore()
+
+
   const emit= defineEmits(['update:modelValue']); 
 
 const props=defineProps({
@@ -37,9 +41,13 @@ const props=defineProps({
     required:true
   }
 })
-function onselect(item){
+async function onselect(item){
+  console.log(item.name)
+  // console.log(item.title)
+
   emit('update:modelValue',item.name);
 
 }
+
 
 </script>        

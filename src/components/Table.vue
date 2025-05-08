@@ -2,6 +2,7 @@
 import { ref } from "vue";
 import { defineProps } from "vue";
 import { RouterLink } from "vue-router";
+import { id } from "vuetify/locale";
 
 
 const props = defineProps({
@@ -35,10 +36,27 @@ required:true
   },titlenodata:{
     type: String,
     required:true
-  }
+  },action:{
+    type: String,
+    required: false,
+  },
 });
 // const clonedata=ref(props.tableData.map(r=>({...r})))
 const selectrole = ["Pendding", "arrived","canceled"];
+//  when have 2 emit  بنعرفهم سوا 
+//  نعمل الداله بتاعتهم وبعدين ال  emit لكل واحد فيهم 
+const emit =defineEmits(["click"],['delete']);
+const clickitem=function (e) {
+  const id=e.id;
+  emit ("click",id );
+  console.log(e.id);
+};
+const deleteitem=function(e){
+  const id=e.id
+  emit ('delete',id)
+  console.log(e.id);
+
+}
 
 
 </script>
@@ -68,7 +86,7 @@ const selectrole = ["Pendding", "arrived","canceled"];
         <tr  v-for="item in tableData" :key="item.Id" class="custom-row" >
           <td
             v-for="col in columns"
-            :key="col.name"
+            :key="col.Id"
             class="text-center font-weight-semibold text-neutral  cursor-default pa-0 px-4  "
             style="font-size: 16px;margin-bottom: 20px; "
           >
@@ -133,7 +151,7 @@ const selectrole = ["Pendding", "arrived","canceled"];
               <v-avatar size="80"   rounded="0"
               >
                 <img 
-                :src="`http://localhost:3000${item[col.name][0]}`"
+                  :src="item.images[0]"
                 style="border-radius: 8px; width: 100%; height: 100%; object-fit: contain;" 
                 alt="image"/>
               </v-avatar>
@@ -143,14 +161,19 @@ const selectrole = ["Pendding", "arrived","canceled"];
               <div class="d-flex justify-center  " style="gap: 16px">
             <v-tooltip>
               <template #activator="{ props }">
+    
                 <v-icon
                   v-bind="props"
                   v-if="icon1"
                   size="24"
+                  :key="item.Id"
+                  @click="clickitem(item)" 
 
                   class="text-primary cursor-pointer"
+              
                   >{{ icon1 }}</v-icon
                 >
+         
               </template>
               {{ titleicon1 }}
             </v-tooltip>
@@ -161,6 +184,9 @@ const selectrole = ["Pendding", "arrived","canceled"];
                   v-bind="props"
                   v-if="icon2"
                   size="24"
+                  :key="item.Id"
+                  @click="deleteitem(item)" 
+
                   class="text-error cursor-pointer"
                   >{{ icon2 }}</v-icon
                 >

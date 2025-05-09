@@ -15,14 +15,14 @@ image:{
 <template>
     <div class="text-center  ">
         <div class="img">
-            <v-avatar size="120" >
+            <v-avatar size="150" >
     <v-img :src='props.image'/>
  </v-avatar>
- <v-btn  icon
+ <!-- <v-btn  icon
  small color="primary" class="edit" 
  >
     <v-icon size="18">mdi-pencil</v-icon>
- </v-btn>
+ </v-btn> -->
     </div>
         </div>
  

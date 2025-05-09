@@ -1,13 +1,13 @@
 <template>
-  <div class="d-flex justify-start" style="z-index: 0;">
-    <v-menu
-      transition="scale-transition"
-    >
+  <div class="d-flex justify-start" style="z-index: 0">
+    <v-menu transition="scale-transition">
       <template v-slot:activator="{ props }">
-        <div class="bg-success"  v-bind="props">
-          <v-icon            
-          size="32" color="primary">mdi-filter-variant</v-icon><span class="font-weight-semibol text-h5 pl-1 text-primary">Filter</span>
-  </div>        
+        <div class="bg-success" v-bind="props">
+          <v-icon size="32" color="primary">mdi-filter-variant</v-icon
+          ><span class="font-weight-semibol text-h5 pl-1 text-primary"
+            >Filter</span
+          >
+        </div>
       </template>
 
       <v-list>
@@ -17,29 +17,33 @@
           :value="i"
           @click="onselect(item)"
           :active="modelValue === item.name"
-
         >
           <v-list-item-title>{{ item.title }}</v-list-item-title>
         </v-list-item>
       </v-list>
     </v-menu>
   </div>
-  </template>
+</template>
 <script setup>
-  const emit= defineEmits(['update:modelValue']); 
+import { useStore } from "../Store/Productstore";
+const productStore = useStore();
 
-const props=defineProps({
-  List:{
-    type:Array,
-    required:true
-  },modelValue:{
-    type:String,
-    required:true
-  }
-})
-function onselect(item){
-  emit('update:modelValue',item.name);
+const emit = defineEmits(["update:modelValue"]);
 
+const props = defineProps({
+  List: {
+    type: Array,
+    required: true,
+  },
+  modelValue: {
+    type: String,
+    required: true,
+  },
+});
+async function onselect(item) {
+  console.log(item.name);
+  // console.log(item.title)
+
+  emit("update:modelValue", item.name);
 }
-
-</script>        
+</script>

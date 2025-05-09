@@ -1,6 +1,8 @@
 <script setup>
 import { ref } from "vue";
 import { defineProps } from "vue";
+import { RouterLink } from "vue-router";
+import { id } from "vuetify/locale";
 
 
 const props = defineProps({
@@ -34,10 +36,28 @@ required:true
   },titlenodata:{
     type: String,
     required:true
-  }
+  },action:{
+    type: String,
+    required: false,
+  },
 });
 // const clonedata=ref(props.tableData.map(r=>({...r})))
-const selectrole = ["Customer", "Admin"];
+const selectrole = ["Pendding", "arrived","canceled"];
+//  when have 2 emit  بنعرفهم سوا 
+//  نعمل الداله بتاعتهم وبعدين ال  emit لكل واحد فيهم 
+const emit =defineEmits(["click"],['delete']);
+const clickitem=function (e) {
+  const id=e.id;
+  emit ("click",id );
+  console.log(e.id);
+};
+const deleteitem=function(e){
+  const id=e.id
+  emit ('delete',id)
+  console.log(e.id);
+
+}
+
 
 </script>
 
@@ -66,7 +86,7 @@ const selectrole = ["Customer", "Admin"];
         <tr  v-for="item in tableData" :key="item.Id" class="custom-row" >
           <td
             v-for="col in columns"
-            :key="col.name"
+            :key="col.Id"
             class="text-center font-weight-semibold text-neutral  cursor-default pa-0 px-4  "
             style="font-size: 16px;margin-bottom: 20px; "
           >
@@ -93,12 +113,12 @@ const selectrole = ["Customer", "Admin"];
                 {{ item[col.name] }}
               </span>
             </template>
-            <template v-else-if="col.name === 'Role'">
-              <div class="d-flex justify-center bg-lightGray rounded-lg  ">
+            <template v-else-if="col.name === 'Set Status'">
+              <div class="d-flex justify-center   rounded-lg  ">
                 <v-select
                 v-model="item.Role"
                 :items="selectrole"
-                label="To"
+                variant="outlined"
                 hide-details
                 hide-no-data
                 single-line
@@ -112,23 +132,27 @@ const selectrole = ["Customer", "Admin"];
              
             </template>
             <template v-else-if="col.name==='Orders'">
-              <router-link :to="'/AllOrders'"> 
-              <button >📦 View Orders</button>
-            </router-link>
+              <RouterLink to="/AllOrders" >
+                <button  >📦 View Orders</button>
+              </RouterLink>
             </template>
             <template v-else-if="col.name==='Order'">
-              <router-link :to="'/OrderDetails'">
-              <button  >📦  Details</button>
-            </router-link>
+              <RouterLink to="/OrderDetails" >
+
+              <button >📦  Details</button>
+              </RouterLink >
+
             </template>
             <template v-else-if="col.name==='Total Price'||col.name==='Price'">
               {{item[col.name]  }}<span> EGP</span>
             </template>
             <!--  -->
-            <template v-else-if="col.name==='Image'">
+            <template v-else-if="col.name==='images'">
               <v-avatar size="80"   rounded="0"
               >
-                <img :src="item[col.name]" style="border-radius: 8px; width: 100%; height: 100%; object-fit: contain;" 
+                <img 
+                  :src="item.images[0]"
+                style="border-radius: 8px; width: 100%; height: 100%; object-fit: contain;" 
                 alt="image"/>
               </v-avatar>
             </template>
@@ -137,14 +161,19 @@ const selectrole = ["Customer", "Admin"];
               <div class="d-flex justify-center  " style="gap: 16px">
             <v-tooltip>
               <template #activator="{ props }">
+    
                 <v-icon
                   v-bind="props"
                   v-if="icon1"
                   size="24"
+                  :key="item.Id"
+                  @click="clickitem(item)" 
 
                   class="text-primary cursor-pointer"
+              
                   >{{ icon1 }}</v-icon
                 >
+         
               </template>
               {{ titleicon1 }}
             </v-tooltip>
@@ -155,6 +184,9 @@ const selectrole = ["Customer", "Admin"];
                   v-bind="props"
                   v-if="icon2"
                   size="24"
+                  :key="item.Id"
+                  @click="deleteitem(item)" 
+
                   class="text-error cursor-pointer"
                   >{{ icon2 }}</v-icon
                 >
@@ -163,7 +195,9 @@ const selectrole = ["Customer", "Admin"];
             </v-tooltip>
           </div>
             </template>
-    
+            <template v-else-if="col.name==='category'">
+              {{ item[col.name].name }}
+            </template>
             <template v-else>
               {{ item[col.name] }}
             </template>

@@ -1,33 +1,33 @@
-import { computed } from "vue"
+import { computed } from 'vue';
 
-export function useFilterCode(productStore,searchterm,fields,filter){
-    
- return computed(()=>{
-        const serachtext=searchterm.value.trim().toLowerCase()
-        const filtertext=filter?.value.trim()
-        if(!serachtext&&!filtertext){
-          return productStore
-        }
-    
- let result=[...productStore]
- if(filtertext){
-  result=result.filter(itm=> itm.Status===filtertext||itm.Category===filtertext)
-}
-if(serachtext){
-if(/^\d+$/.test(serachtext)){
-  return result.filter(itm=>
-       [itm.Stock,itm.Price,itm.Total_Price].some(num=>String(num).toLowerCase().startsWith(serachtext))   
+export function useFilterCode(sourceData, searchterm, fields) {
+  return computed(() => {
+    const serachtext = searchterm.value.trim().toLowerCase();
+    console.log(serachtext);
+    const result = [...sourceData.value]; // data copy
 
-)}
-      const re=new RegExp(`\\b${serachtext}`,'i')
-    return result.filter(item=>{
-          const  allvalue=fields.map(v=>String(item[v]||'').toLowerCase()).join(' ')
-      
-          return  re.test(allvalue)
-        })
-}
-return result
+    console.log(result);
+    console.log(searchterm);
+    console.log(fields[1]);
 
-})
+    if (!serachtext) {
+      return sourceData.value;
+    }
+    if (searchterm) {
+      //  هلف علي الداتا  اللي هي المنتجات واخد منها الفيلد وبعدين اعمل  check
+      return result.filter(item => {
+        const allvalue = fields
+          .map(field => {
+            let value = item[field];
+            if (value && typeof value === 'object') {
+              return String(value.name).toLowerCase();
+            }
 
+            return String(value || '').toLowerCase();
+          })
+          .join(' ');
+        return allvalue.includes(serachtext);
+      });
+    }
+  });
 }

@@ -9,12 +9,14 @@ export const useOrder=defineStore('order',()=>{
           { name: 'Number_of_Items', label: 'Number of Items' },
           { name: 'Total_Price', label: 'Total Price' },
           { name: 'Status', label: 'Status' },
+          { name: 'Set Status', label: 'Set Status' },
+
           { name:'Order',label:'Order'},
         
         
         ]);
         
-        
+        // const Order_data=ref([])
         const Order_data = ref([
           {
             'Id':998,

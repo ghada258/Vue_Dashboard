@@ -135,15 +135,6 @@
           />
       </div>
 
-      <div class="d-flex flex-column" style="width: 50%;">
-        <label class="my-label text-body-1 font-weight-semibold "style="margin-bottom: -16px;" >Subcategory</label>
-        <v-select
-            label="Select"
-            :items="['T-shirt', 'Trousers']"
-            variant="outlined"
-            required
-          />
-      </div>
     </div> 
   
     </v-card-text>

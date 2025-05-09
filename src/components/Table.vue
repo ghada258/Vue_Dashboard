@@ -112,12 +112,14 @@ const selectrole = ["Customer", "Admin"];
              
             </template>
             <template v-else-if="col.name==='Orders'">
-              
+              <router-link :to="'/AllOrders'"> 
               <button >📦 View Orders</button>
+            </router-link>
             </template>
             <template v-else-if="col.name==='Order'">
-              
-              <button >📦  Details</button>
+              <router-link :to="'/OrderDetails'">
+              <button  >📦  Details</button>
+            </router-link>
             </template>
             <template v-else-if="col.name==='Total Price'||col.name==='Price'">
               {{item[col.name]  }}<span> EGP</span>

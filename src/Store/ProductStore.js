@@ -2,110 +2,109 @@ import axios from 'axios';
 import { defineStore } from 'pinia';
 import { ref } from 'vue';
 
-export const useProductStore = defineStore('product', () => {
-  const PoducrcolumnsName = ref([
-    { name: '_id', label: 'Id' },
-    { name: 'images', label: 'Image' },
-    { name: 'name', label: 'Product Name' },
-    { name: 'category', label: 'Category' },
-    { name: 'brand', label: 'Brand' },
-    { name: 'inStock', label: 'Stock' },
-    { name: 'price', label: 'Price' },
-    { name: 'Action', label: 'Action' },
-  ]);
-  const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InNhbWFzaW1vQGdtYWlsLmNvbSIsImlkIjoiNjgxNmFlZTdhYjE3ZTFkZGJjZWFlZGM4Iiwicm9sZSI6Im1hbmdlciIsImlhdCI6MTc0NjYyNzk4MSwiZXhwIjoxNzQ2ODAwNzgxfQ.Dla9CdBspmv9T9vpz0D7seuC--7b6QTNtveaIvLm9p8";
-
-//for all data
-  const Product_data = ref([]);
-  //for data by id 
-  const Product_data1 = ref([]);
-//filter and get all data
-  const fetchproduct = async (filter={}) => {
-     const params=new URLSearchParams()
-    if (filter.category) params.append('category', filter.category)
-       const queryString=params.toString()
-      const url=queryString?`/api/products?${queryString}`:`/api/products`
-          // onsole.log(url);
-       const response = await axios.get(url);
-    Product_data.value = response.data.data.products.filter(p=> p.isDeleted===false)
-    return response
+export const useStore = defineStore('CRUD', ()=> {
+  const endpoint = ref('products');
+  const resourse = param => {
+    endpoint.value = param;
   };
-  // 
-
+  // token for authentication
+  const token =
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InNhbWFzaW1vQGdtYWlsLmNvbSIsImlkIjoiNjgxNmFlZTdhYjE3ZTFkZGJjZWFlZGM4Iiwicm9sZSI6Im1hbmdlciIsImlhdCI6MTc0NjgwNzg3NywiZXhwIjoxNzQ2OTgwNjc3fQ.jPoHmbDNC1MUnvf6JazIA_LCvsPGdxUhcUfLEqSDrA8';
+  //variable for all data 
+  const alldata = ref([]);
+  // variable for data by id
+  const dataitem = ref([]);
+  //filter and get all data
+  const fetchproduct = async (filter = {}) => {    
+    const params = new URLSearchParams();
+    if (filter.category) params.append('category', filter.category);
+    // Add more filters as needed here 
+    const queryString = params.toString();
+    const url = queryString ? `/api/${endpoint.value}?${queryString}`: `/api/${endpoint.value}`;
+    //condition admin or manager .........................
+    const response = await axios.get(url, {headers: { Authorization: `Bearer ${token}`},});
+    // to get the first key of the data object
+    const firstKey = Object.keys(response.data.data)[0];
+    const dataArray = response.data.data[firstKey];
+    alldata.value = Array.isArray(dataArray)
+      ? dataArray.filter(p => !p.isDeleted)
+      : [];
+    // Product_data.value = response.data.data.products.filter(p=> p.isDeleted===false)
+    return response;
+  };
   // by id get product
-   const fetchproductbyid= async(id)=>{
-const response=await axios.get(`/api/products/${id}`)
-Product_data1.value=response.data.data.product
-return response
-}
-// 
-// by id update product 
-const updateproductdata= async(id,product)=> {
-const response =await axios.patch(`/api/products/${id}`,product,  {
-  headers: {
-    'Authorization': `Bearer ${token}`
-  }
-})
-//  resp is object return product update and stautus 
-//store  product update 
-const update =response.data.data.product
-//  هنلف علي  المنتجات بتاعتي اللي عندي اصلا ونجيب المنتج بتاعنا القديم 
-// هنجيب ال  index  بتاعه
-const  indexoldproduct=Product_data.value.findIndex(p=> p.id===id)
-if(indexoldproduct!==-1){
-  Product_data.value[indexoldproduct]=update
-}
-return response
-
-
-
-}
-// 
-//by id delete product 
-const deleteproduct= async(id)=> {
-  const response =await axios.delete(`/api/products/${id}`,{
-    headers: {
-      'Authorization': `Bearer ${token}`
-    }
-  })
-console.log(response.data);
-if(response.data.status==="success"){
-  console.log("Product deleted successfully");
-  Product_data.value = Product_data.value.filter(product => product._id !== id);}
-  return response
-  }
-  // 
-
-//add product 
-  const addproduct = async (product) => {
-
-    const response = await axios.post(
-      '/api/products',
+  const fetchdataitem = async id => {
+    const response = await axios.get(`/api/${endpoint.value}/${id}`);
+    dataitem.value = response.data.data.product;
+    return response;
+  };
+  //
+  // by id update product
+  const updatedataitem = async (id, product) => {
+    const response = await axios.patch(
+      `/api/${endpoint.value}/${id}`,
       product,
       {
         headers: {
-          'Authorization': `Bearer ${token}`
-        }
+          Authorization: `Bearer ${token}`,
+        },
       }
     );
+    //  resp is object return product update and stautus
+    //store  product update
+    const update = response.data.data.product;
+    //  هنلف علي  المنتجات بتاعتي اللي عندي اصلا ونجيب المنتج بتاعنا القديم
+    // هنجيب ال  index  بتاعه
+    const indexoldproduct = alldata.value.findIndex(p => p.id === id);
+    if (indexoldproduct !== -1) {
+      alldata.value[indexoldproduct] = update;
+    }
+    return response;
+  };
+  //
+  //by id delete product
+  const deletedataitem = async id => {
+    const response = await axios.delete(`/api/${endpoint.value}/${id}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    console.log(response.data);
+    if (response.data.status === 'success') {
+      console.log('Product deleted successfully');
+      alldata.value = alldata.value.filter(
+        product => product._id !== id
+      );
+    }
+    return response;
+  };
+  //
+
+  //add product
+  const adddataitem = async product => {
+    const response = await axios.post(`/api/${endpoint.value}`, product, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
 
     if (response.status === 201) {
       console.log('Product added successfully');
       console.log(response.data);
-      Product_data.value.push(response.data.product);
+      alldata.value.push(response.data.product);
     }
     return response;
   };
-  // 
+  //
 
   return {
-    PoducrcolumnsName,
-    Product_data,
+    Product_data: alldata,
     fetchproduct,
-    addproduct,
-    fetchproductbyid,
-    Product_data1,
-    updateproductdata,
-    deleteproduct
+    addproduct: adddataitem,
+    fetchproductbyid: fetchdataitem,
+    Product_data1: dataitem,
+    updateproductdata: updatedataitem,
+    deleteproduct: deletedataitem,
+    resourse,
   };
 });

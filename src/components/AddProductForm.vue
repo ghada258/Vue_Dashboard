@@ -379,7 +379,7 @@
 import { ref, computed, onMounted, watchEffect } from "vue";
 import { useImageUploadStore } from "../Store/ImageUploadStore.js";
 import Pagetitle from "../components/Pagetitle.vue";
-import { useProductStore } from "../Store/ProductStore.js";
+import { useStore } from "../Store/Productstore.js";
 import { useRoute } from "vue-router";
 import Secondarybutton from "../components/Secondarybutton.vue";
 import Primarybutton from "../components/Primarybutton.vue";
@@ -395,7 +395,7 @@ const selectedSizes = ref([]);
 const selectedGenders = ref([]);
 const Product_Price = ref("");
 const Stock = ref("");
-const productStore = useProductStore();
+const productStore = useStore();
 const route = useRoute();
 const initialData = ref({});
 const mood = ref("add");

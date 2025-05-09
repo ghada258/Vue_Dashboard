@@ -26,7 +26,7 @@
            
 
      
-          <v-list-item   to="/" value="Dashboard" class="mt-4 justify-center align-center pa-0 ">
+          <v-list-item   to="/Dashboard" value="Dashboard" class="mt-4 justify-center align-center pa-0 ">
             <template #prepend>
               <v-list-item-icon class="px-4 ">
             

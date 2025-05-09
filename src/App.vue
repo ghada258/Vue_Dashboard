@@ -10,12 +10,7 @@ import AllOrders from "./components/AllOrders.vue";
 </script>
 
 <template>
- <!-- <Login/> -->
-  <!-- <Admins/>-->
-  <Sidebar />
   <RouterView/>
-   <!-- <OrderDetails/> -->
-    <!-- <AllOrders/> -->
 </template>
 <style lang="scss" scoped>
 

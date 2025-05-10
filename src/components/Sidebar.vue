@@ -11,7 +11,7 @@
           <v-list-item class="d-flex flex-column gap-6" 
           >
           <v-list-item-avatar>
-            <v-img src="public/profile.jpg" class=" rounded-circle mx-auto mb-4  "cover width="100"
+            <v-img src="../../public/images/admin_login.svg" class=" rounded-circle mx-auto mb-4  "cover width="100"
   height="100"  ></v-img>
         
           </v-list-item-avatar>

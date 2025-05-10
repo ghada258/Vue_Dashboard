@@ -2,37 +2,54 @@
 <script setup>
 import Templatepage from '../components/Templatepage.vue';
 import Table from '../components/Table.vue';
-import { computed, ref, watch} from 'vue'; 
+import { computed, onBeforeMount, onMounted, ref, watch} from 'vue'; 
 import Paginationtable from '../components/Paginationtable.vue';
 import Pagetitle from '../components/Pagetitle.vue';
 import Filter from '../components/Filter.vue';
-import { useOrder } from '../Store/OrderStore';
+import { useOrderStore } from '../Store/OrderStore';
 import Search from '../components/Search.vue';
 import {useFilterCode} from '../Store/Searchcode'
 import {pagination} from '../Store/Pagination'
 const searchterm=ref('')
 const Filterterm=ref('')
-const ordertStore=useOrder()
-const filteroption = ref([
-{ name: '', title: 'All' },
-  { name: 'Arrived',  title: 'Arrived' },
-  { name: 'Canceled', title: 'Canceled' },
-])
+ const OrdercolumnsName = ref([
+          {name:'_id',label:'Id'},
+          { name: 'firstName', label: 'First Name'},
+          { name: 'lastName', label: 'Last Number'},
+          { name: 'email', label: 'Email' },
+          { name: 'itemsCount', label:'Number of Items'},
+          { name: 'totalPriceOrder', label: 'Total Price' },
+          { name: 'status', label: 'Status' },   
+          { name:'Order',label:'Order'},
+]);
+const ordertStore=useOrderStore()
+// const filteroption = ref([
+// { name: '', title: 'All' },
+//   { name: 'Arrived',  title: 'Arrived' },
+//   { name: 'Canceled', title: 'Canceled' },
+// ])
 
-const field=['Status','Customer_Name','Phone_Number']
-const filterorder=useFilterCode(ordertStore.Order_data,searchterm,field,Filterterm)
+// const field=['Status','Customer_Name','Phone_Number']
+// const filterorder=useFilterCode(ordertStore.Order_data,searchterm,field,Filterterm)
 
-const paginationdata=pagination(filterorder,8)
-//tommorrow
-watch([searchterm,Filterterm],()=>{
-  paginationdata.page.value = 1;
-})
- 
+// const paginationdata=pagination(filterorder,8)
+// //tommorrow
+// watch([searchterm,Filterterm],()=>{
+//   paginationdata.page.value = 1;
+// })
+ onBeforeMount(() => {
+  console.log('fetched');
+  ordertStore.fetchOrders();
+});
+onMounted(() => {
+  console.log('Data fetched on mount:');
+});
 </script>
 
 <template>
   <div class="text-center ">
-    <Templatepage>
+        <Templatepage :statusfetch="ordertStore.status" :length="ordertStore.datalength " nofilterdata="/no product.svg"  titlenodata=" No Orders available">
+
         <template #partone>
             <Pagetitle title="Order Management"/>
         </template>
@@ -45,10 +62,11 @@ watch([searchterm,Filterterm],()=>{
 
           </template>
       <template #partthree>
-        <Table :columns="ordertStore.OrdercolumnsName" :tableData="paginationdata.paginationitem.value"nofilterdata="/no-order.svg" titlenodata=" No order match your search....."/>
+        <Table :columns="OrdercolumnsName" :tableData="ordertStore.alldata"nofilterdata="/no-order.svg" titlenodata=" No order match your search....."/>
       </template>
       <template #partfour>
-        <Paginationtable :totalpage="paginationdata.totalpage.value" v-model:page="paginationdata.page.value" :itemperpage="paginationdata.itemperpage"/>
+        
+        <!-- <Paginationtable :totalpage="paginationdata.totalpage.value" v-model:page="paginationdata.page.value" :itemperpage="paginationdata.itemperpage"/> -->
       </template>
     </Templatepage>
   </div>

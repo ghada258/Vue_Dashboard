@@ -76,16 +76,13 @@ onBeforeMount(() => {
 onMounted(async()=>{
 await nextTick()
   console.log(container.value.parentNode)
-
-
 }
 )
 </script>
 
 <template >
   <div class="text-center">
-    <Templatepage :statusfetch="productStore.status" :length="productStore.datalength " nofilterdata="/no product.svg"  titlenodata=" No products available"
->
+    <Templatepage :statusfetch="productStore.status" :length="productStore.datalength " nofilterdata="/no product.svg"  titlenodata=" No products available">
       <template #partone>
         <Pagetitle title="Product Management" />
       </template>

@@ -37,8 +37,8 @@ const routes = [
       { path: 'admins', component:Admins,meta:{endpoint:'admins'} },
       { path: 'profile', component: Profile },
       { path: 'AddProduct', component: AddProduct },
-      { path: 'OrderDetails', component: OrderDetails },
-      { path: 'AllOrders', component: AllOrders },
+      { path: 'OrderDetails/:_id', component: OrderDetails },
+      { path: 'AllOrders/:_id', component: AllOrders },
       { path:'EditProduct/:id',name:'EditProduct',component:AddProductForm,props:true},
       {path:'/AddProduct',name:'AddProduct',component:AddProduct,props:true }
     ]

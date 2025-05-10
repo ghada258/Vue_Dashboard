@@ -5,14 +5,11 @@ import Paginationtable from "../components/Paginationtable.vue";
 import Pagetitle from "../components/Pagetitle.vue";
 import Primarybutton from "../components/Primarybutton.vue";
 import Table from "../components/Table.vue";
-import { useStore } from "../Store/Productstore";
 import { computed, watch } from "vue";
-import { useRoute } from "vue-router";
-
-// import { useAdminStore } from '../Store/AdminStore';
+// import templateeeror from "../components/Templateerror.vue";
+import { useAdminStore } from '../Store/AdminStore';
 import { pagination } from "../Store/Pagination";
-import { ref, onBeforeMount } from "vue";
-const route = useRoute();
+import { ref, onBeforeMount,onMounted } from "vue";
 const admincolumnsName = ref([
   { name: "_id", label: "Id" },
   { name: "firstName", label: "First Name" },
@@ -21,35 +18,43 @@ const admincolumnsName = ref([
   { name: "role", label: "Role" },
   { name: "Action", label: "Action" },
 ]);
-// const adminStore = useAdminStore()
-const productStore = useStore();
+const adminStore = useAdminStore();
 
-const datapagination = computed(() => productStore.Product_data);
+const datapagination = computed(() => adminStore.Product_data);
 
 const paginationdata = pagination(datapagination, 5);
 
-onBeforeMount(() => {
-  productStore.resourse("admins");
+// onBeforeMount(() => {
+//   adminStore.resourse("admins");
 
-  productStore
-    .fetchproduct()
-    .then(() => {
-      console.log("Data fetched successfully:", productStore.Product_data);
-    })
-    .catch((error) => {
-      console.error("Error fetching data:", error);
-    });
-});
+//   adminStore
+//     .fetchproduct()
+//     .then(() => {
+//       console.log("Data fetched successfully:", adminStore.Product_data);
+//     })
+//     .catch((error) => {
+//       console.error("Error fetching data:", error);
+//     });
+// });
 
 // watch(() => route.fullPath, () => {
-//   productStore.resourse("admins");
-//   productStore.fetchproduct();
+//   adminStore.resourse("admins");
+//   adminStore.fetchproduct();
 // });
+onBeforeMount(() => {
+  adminStore.fetchproduct();
+});
+
+onMounted(() => {
+  console.log('Data fetched on mount:', adminStore.Product_data);
+});
+
+
 </script>
 
 <template>
   <div class="text-center">
-    <Templatepage>
+    <Templatepage  :statusfetch="adminStore.status" :length="adminStore.datalength" >
       <template #partone>
         <Pagetitle title="Admins" />
       </template>

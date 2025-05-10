@@ -25,8 +25,8 @@
   </div>
 </template>
 <script setup>
-import { useStore } from "../Store/Productstore";
-const productStore = useStore();
+import { useProductStore } from "../Store/ProductStore";
+const productStore = useProductStore();
 
 const emit = defineEmits(["update:modelValue"]);
 

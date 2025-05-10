@@ -1,5 +1,29 @@
 <script setup>
-  import Order from './Order.vue';
+import { computed, onMounted, ref } from 'vue';
+import Order from './Order.vue';
+import { useOrderStore } from '../Store/OrderStore';
+  
+const props = defineProps({
+  orderId: String
+});
+const order = ref(null);
+const store = useOrderStore()
+
+const firstName = computed(() => order.value?.user?.firstName + ' ' +order.value?.user?.lastName  || '');
+const email = computed(() => order.value?.user?.email || '');
+const OrderDate = computed(() => order.value?.user?.createdAt || '');
+const numberOfItems = computed(() => order.value?.items?.length || 0);
+const address = computed(() => order.value?.shippingAddress || '');
+const paymentMethod = computed(() => order.value?.paymentInfo?.method || '');
+const orderPrice = computed(() => order.value?.totalPriceOrder || 0);
+const status = computed(() => order.value?.status || '');
+
+onMounted(async () => {
+  const result = await store.fetchOrderById(props.orderId);
+  order.value = result;
+  console.log(result);
+})
+
 </script>
 <template>
  <form class="mt-2 d-flex" style="margin-left: 88px;  margin-right: 44px; gap: 16px;">
@@ -11,11 +35,10 @@
           <h1 class="text-primary font-weight-regular mb-4 " style="font-size: 24px;">Customer Information</h1>
           <label class="my-label text-body-1 font-weight-semibold "style="margin-bottom: -16px;" >Customer Name</label>
           <v-text-field
-            ref="Customer_Name"
-            v-model="Customer_Name"
+            ref="firstName"
+            v-model="firstName"
             variant="outlined"
             class="h-44"
-            value="Mohammed Ahmed"
             height="30"
             style="font-weight: 600;"
             disabled
@@ -25,10 +48,9 @@
       <div class="d-flex flex-column ">
           <label class="my-label text-body-1 font-weight-semibold "style="margin-bottom: -16px;">Address</label>
           <v-text-field
-            ref="Address"
-            v-model="Address"
+            ref="address"
+            v-model="address"
             variant="outlined"
-            value="Ismailia 123"
             style="font-weight: 600;"
             disabled
             required
@@ -38,48 +60,44 @@
       <div class="d-flex flex-column ">
           <label class="my-label text-body-1 font-weight-semibold "style="margin-bottom: -16px;">Payment Method</label>
           <v-text-field
-            ref="Payment_Method"
-            v-model="Payment_Method"
+            ref="paymentMethod"
+            v-model="paymentMethod"
             style="font-weight: 600;"
             disabled
             variant="outlined"
-            value="Credit Card"
             required
           />
       </div>
       <div class="d-flex flex-column ">
           <label class="my-label text-body-1 font-weight-semibold "style="margin-bottom: -16px;">Customer Email</label>
           <v-text-field
-            ref="Customer_Email"
-            v-model="Customer_Email"
+            ref="email"
+            v-model="email"
             style="font-weight: 600;"
             disabled
             variant="outlined"
-            value="Ghada@gmail.com"
             required
           />
       </div>    
       <div class="d-flex flex-column ">
-          <label class="my-label text-body-1 font-weight-semibold "style="margin-bottom: -16px;">Phone Number</label>
+          <label class="my-label text-body-1 font-weight-semibold "style="margin-bottom: -16px;">Order Date</label>
           <v-text-field
-            ref="Phone_Number"
-            v-model="Phone_Number"
+            ref="OrderDate"
+            v-model="OrderDate"
             style="font-weight: 600;"
             disabled
             variant="outlined"
-            value="01026985545"
             required
           />
       </div> 
       <div class="d-flex flex-column ">
           <label class="my-label text-body-1 font-weight-semibold "style="margin-bottom: -16px;">Number Of Items</label>
           <v-text-field
-            ref="Number_Of_Items"
-            v-model="Number_Of_Items"
+            ref="numberOfItems"
+            v-model="numberOfItems"
             style="font-weight: 600;"
             disabled
             variant="outlined"
-            value="5 Items"
             required
           />
       </div> 
@@ -96,11 +114,12 @@
         <v-card-text class="pa-0 d-flex flex-column" style="gap:10px; height: 500px; overflow:scroll">
             <div class="d-flex justify-space-between" style="gap: 30px;">
                 <h1 class="text-primary font-weight-regular" style="font-size: 24px;">Order Items</h1>
-                <h1 class="text-primary font-weight-regular mr-16" style="font-size: 24px;">3 Items</h1>
+                <h1 class="text-primary font-weight-regular mr-16" style="font-size: 24px;">{{ numberOfItems }} Items</h1>
             </div> 
-            <Order/>
-            <Order/>
-            <Order/>
+           <template v-if="order && order.items">
+             <Order v-for="item in order.items" :key="item._id" :item="item" />
+          </template>
+           
         </v-card-text>
       </div> 
   <!-- pricing and stock -->
@@ -112,25 +131,22 @@
         <div class="d-flex flex-column" style="width: 50%;">
         <label class="my-label text-body-1 font-weight-semibold "style="margin-bottom: -16px;" >Order Price</label>
         <v-text-field
-            ref="Order_Price"
-            v-model="Order_Price"
+            ref="orderPrice"
+            v-model="orderPrice"
             style="font-weight: 600;"
             disabled
             variant="outlined"
-            value="$250"
             required
           />
       </div>
 
       <div class="d-flex flex-column" style="width: 50%;">
-        <label class="my-label text-body-1 font-weight-semibold "style="margin-bottom: -16px;" >Status</label>
+        <label class="my-label text-body-1 font-weight-semibold "style="margin-bottom: -16px; background-color: white;" >Status</label>
         <v-text-field
-            ref="Status"
-            v-model="Status"
-            disabled
+            ref="status"
+            v-model="status"
             style="font-weight: 600;"
             variant="outlined"
-            value="Shipped"
             required
           />
       </div>

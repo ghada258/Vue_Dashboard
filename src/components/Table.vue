@@ -90,13 +90,13 @@ const deleteitem=function(e){
             class="text-center font-weight-semibold text-neutral  cursor-default pa-0 px-4  "
             style="font-size: 16px;margin-bottom: 20px; "
           >
-            <template v-if="col.name === 'Status'">
+            <template v-if="col.name === 'status'">
               <span
-                class="w-75 text-center d-inline-block pa-2 rounded-lg cursor-default"
+                class="w-80 text-center d-inline-block pa-2 rounded-lg cursor-default"
                 :class="{
-                  'text-success bg-error  ': item[col.name] === 'Blocked'||item[col.name] === 'Canceled',
+                  'text-success bg-error  ': item[col.name] === 'Blocked'||item[col.name] === 'Cancelled',
                   ' text-success bg-lightGray ': item[col.name] === 'Active'||item[col.name] === 'Arrived',
-                  'text-success bg-warning  ': item[col.name] === 'Vip'||item[col.name] === 'Shipped',
+                  'text-success bg-warning  ': item[col.name] === 'Vip'||item[col.name] === 'shipping',
                   'text-success bg-blocked  ': item[col.name] === 'Inactive'  
                 }"
               >
@@ -132,12 +132,12 @@ const deleteitem=function(e){
              
             </template>
             <template v-else-if="col.name==='Orders'">
-              <RouterLink to="/AllOrders" >
+              <RouterLink :to="`/AllOrders/${item._id}`" >
                 <button  >📦 View Orders</button>
               </RouterLink>
             </template>
             <template v-else-if="col.name==='Order'">
-              <RouterLink to="/OrderDetails" >
+              <RouterLink :to="`/OrderDetails/${item._id}`" >
 
               <button >📦  Details</button>
               </RouterLink >

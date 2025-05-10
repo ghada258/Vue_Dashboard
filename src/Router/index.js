@@ -33,20 +33,14 @@ const routes = [
       { path: 'Dashboard', component: Dashboard },
       { path: 'customer-management', component: CustomerManagement },
       { path: 'order-management', component: OrderManagement },
-      { path: 'product-management', component: ProductManagement },
-      { path: 'admins', component: Admins },
+      { path: 'product-management', component:ProductManagement,meta:{endpoint:'products'} },
+      { path: 'admins', component:Admins,meta:{endpoint:'admins'} },
       { path: 'profile', component: Profile },
       { path: 'AddProduct', component: AddProduct },
-      { path: 'OrderDetails', component: OrderDetails },
-      { path: 'AllOrders', component: AllOrders },
+      { path: 'OrderDetails/:_id', component: OrderDetails },
+      { path: 'AllOrders/:_id', component: AllOrders },
       { path:'EditProduct/:id',name:'EditProduct',component:AddProductForm,props:true},
-      {
-        path:'/AddProduct',
-        name:'AddProduct',
-        component:AddProduct,
-        props:true
-    
-    }
+      {path:'/AddProduct',name:'AddProduct',component:AddProduct,props:true }
     ]
   },
   {

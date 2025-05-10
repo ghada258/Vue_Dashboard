@@ -18,6 +18,7 @@ export const useStore = defineStore('CRUD', ()=> {
   const fetchproduct = async (filter = {}) => {    
     const params = new URLSearchParams();
     if (filter.category) params.append('category', filter.category);
+    if (filter.status) params.append('status', filter.status);
     // Add more filters as needed here 
     const queryString = params.toString();
     const url = queryString ? `/api/${endpoint.value}?${queryString}`: `/api/${endpoint.value}`;

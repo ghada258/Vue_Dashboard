@@ -369,6 +369,7 @@
           width="48%"
           height="56px"
           :disabled="!isFormValid"
+          
         />
       </div>
     </div>
@@ -379,7 +380,7 @@
 import { ref, computed, onMounted, watchEffect } from "vue";
 import { useImageUploadStore } from "../Store/ImageUploadStore.js";
 import Pagetitle from "../components/Pagetitle.vue";
-import { useStore } from "../Store/Productstore.js";
+import { useProductStore } from "../Store/Productstore.js";
 import { useRoute } from "vue-router";
 import Secondarybutton from "../components/Secondarybutton.vue";
 import Primarybutton from "../components/Primarybutton.vue";
@@ -395,7 +396,7 @@ const selectedSizes = ref([]);
 const selectedGenders = ref([]);
 const Product_Price = ref("");
 const Stock = ref("");
-const productStore = useStore();
+const productStore = useProductStore();
 const route = useRoute();
 const initialData = ref({});
 const mood = ref("add");
@@ -584,9 +585,15 @@ async function submitForm() {
     gender: selectedGenders.value.map((i) => genders[i]),
     images: store.images.filter((img) => img != null),
   };
+    console.log(payload)
+    
 
   try {
+          console.log('here rn')
+
     if (mood.value === "edit") {
+            console.log('here edit')
+
       if (!hasproductchange()) {
         console.log("no data change to update");
         return;
@@ -595,7 +602,11 @@ async function submitForm() {
       await productStore.updateproductdata(route.params.id, payload);
       console.log("updated data sucessfully");
     } else {
-      await productStore.addproduct(payload);
+      console.log('here')
+      await productStore.adddataitem(payload)
+      // await productStore.adddataitem(payload);
+            console.log('here ana ')
+
     }
     console.log("all data get");
 
@@ -611,9 +622,9 @@ async function submitForm() {
     Stock.value = "";
     store.images.splice(0);
     store.Statuses.splice(0);
-  } catch (err) {
-    console.error("Error adding product:", err.response?.data || err.message);
-  }
+  } catch (error) {
+  console.error(error);
+}
 }
 </script>
 

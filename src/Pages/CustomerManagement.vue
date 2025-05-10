@@ -12,6 +12,8 @@ import {useFilterCode} from '../Store/Searchcode'
 import { pagination } from '../Store/Pagination';
 const searchterm=ref('')
 const Filterterm=ref('')
+// const container = ref(null)
+
 
 
 const customerstore=useCustomer()
@@ -33,14 +35,14 @@ const filteroption = ref([
 
 <template >
   
-   <Templatepage class="bg-success">
+   <Templatepage class="bg-success " >
         <template #partone>
             <Pagetitle title="Customer Management"/>
         </template>
         <template #parttwo>
             <div class="d-flex bg-success">
-              <Filter :List="filteroption" v-model="Filterterm" />
-            <Search v-model="searchterm" label='Search for customer...'/>
+              <!-- <Filter :List="filteroption" v-model="Filterterm" /> -->
+            <!-- <Search v-model="searchterm" label='Search for customer...'/> -->
             <Primarybutton icon="mdi-plus" title="Add New Customer"/>
         </div>
         </template>

@@ -1,19 +1,17 @@
 <!-- Parent.vue -->
 <script setup>
 import Templatepage from "../components/Templatepage.vue";
-import { computed, onBeforeMount, ref, watch } from "vue";
+import { computed, nextTick, onBeforeMount, onMounted, ref, watch } from "vue";
 import Paginationtable from "../components/Paginationtable.vue";
 import Pagetitle from "../components/Pagetitle.vue";
 import Primarybutton from "../components/Primarybutton.vue";
 import Table from "../components/Table.vue";
 import Filter from "../components/Filter.vue";
-import { useStore } from "../Store/Productstore";
+import { useProductStore } from "../Store/Productstore";
 import Search from "../components/Search.vue";
 import { useFilterCode } from "../Store/Searchcode";
 import { pagination } from "../Store/Pagination";
-import AddProductForm from "../components/AddProductForm.vue";
 import router from "../Router";
-import { useRoute } from "vue-router";
 
 const PoducrcolumnsName = ref([
   { name: "_id", label: "Id" },
@@ -26,16 +24,13 @@ const PoducrcolumnsName = ref([
   { name: "Action", label: "Action" },
 ]);
 
-const route = useRoute();
-
-const productStore = useStore();
+const productStore = useProductStore();
 const searchterm = ref("");
-console.log(searchterm.value);
+
 
 const Filterterm = ref("");
 const filteroption = ref([
   { name: "", title: "All" },
-
   { name: "cloth", title: "cloth" },
   { name: "shoes", title: "shoes" },
   { name: "glasses", title: "glasses" },
@@ -76,20 +71,21 @@ watch([searchterm, Filterterm], () => {
 });
 
 onBeforeMount(() => {
-  productStore.resourse("products");
-
   productStore.fetchproduct();
 });
+onMounted(async()=>{
+await nextTick()
+  console.log(container.value.parentNode)
 
-//     watch(() => route.fullPath, () => {
-//   productStore.resourse("products");
-//   productStore.fetchproduct();
-// });
+
+}
+)
 </script>
 
-<template>
+<template >
   <div class="text-center">
-    <Templatepage>
+    <Templatepage :statusfetch="productStore.status" :length="productStore.datalength " nofilterdata="/no product.svg"  titlenodata=" No products available"
+>
       <template #partone>
         <Pagetitle title="Product Management" />
       </template>
@@ -113,8 +109,7 @@ onBeforeMount(() => {
           titleicon1="Edit"
           icon2="mdi-trash-can-outline"
           titleicon2="Delete"
-          nofilterdata="/no product.svg"
-          titlenodata=" No products match your search....."
+        
           @click="handleClick"
           @delete="handeldelete"
         />

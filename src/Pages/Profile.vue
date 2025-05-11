@@ -1,20 +1,9 @@
-<!-- <template>
-  <row justify="center">
-
-<v-col class=" mx-auto">
-
-</v-col>
-
-  </row>
-</template> -->
-
 <script setup>
 import Formfield from '../components/Formfield.vue';
 import Editprofilephoto from '../components/Editprofilephoto.vue';
 import DropList from '../components/DropList.vue';
 import Pagetitle from '../components/Pagetitle.vue';
 import Primarybutton from '../components/Primarybutton.vue';
-
 
 
 </script>

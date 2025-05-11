@@ -1,3 +1,29 @@
+<script setup>
+import { useRouter } from 'vue-router';
+import { UserStore } from '../Store/UserStore';
+import { onMounted, ref } from 'vue';
+
+const router = useRouter();
+const userStore = UserStore();
+
+const handleLogout = () => {
+  userStore.logout();
+  router.push('/Login'); 
+};
+
+const firstName = ref('');
+const lastName = ref('');
+
+onMounted(() => {
+  const user = userStore.logedUser;
+  console.log('User:', user);
+
+  if (user) {
+    firstName.value = user.firstName || '';
+    lastName.value = user.lastName || '';
+  }
+});
+</script>
 <template >
     <v-layout>
       <v-navigation-drawer expand-on-hover rail color="primary"  class=" py-8  app-drawer " >
@@ -16,7 +42,7 @@
         
           </v-list-item-avatar>
           <v-list-item-title class="mb-4 font-weight-semibold text-h6 text-success">
-            Ahmed Hamada
+           {{ firstName +" " +lastName}}
           </v-list-item-title>
         </v-list-item>
         </v-list>
@@ -84,7 +110,7 @@
             <v-list-item-title  class="text-body-2 text-success">Profile </v-list-item-title>
           </v-list-item>
          <!-- log out -->
-         <v-list-item value="log out" class="mt-4 justify-center align-center pa-0 ">
+         <v-list-item value="log out" @click="handleLogout" class="mt-4 justify-center align-center pa-0 ">
             <template #prepend>
               <v-list-item-icon class="px-4">
                 <v-icon color="success" size="32" >mdi-logout-variant</v-icon>
@@ -98,13 +124,6 @@
     </v-layout>
 </template>
 
-<script setup>
-import { RouterLink } from 'vue-router';
-
-
-
-
-</script>
 
 <style lang="scss" scoped>
 .app-drawer.v-navigation-drawer--rail .profile-section {

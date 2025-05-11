@@ -7,9 +7,10 @@ import Primarybutton from "../components/Primarybutton.vue";
 import Table from "../components/Table.vue";
 import { computed, watch } from "vue";
 // import templateeeror from "../components/Templateerror.vue";
-import { useAdminStore } from '../Store/AdminStore';
+import { useAdminStore } from "../Store/AdminStore";
 import { pagination } from "../Store/Pagination";
-import { ref, onBeforeMount,onMounted } from "vue";
+import { ref, onBeforeMount, onMounted } from "vue";
+import Addnewadmin from "./Addnewadmin.vue";
 const admincolumnsName = ref([
   { name: "_id", label: "Id" },
   { name: "firstName", label: "First Name" },
@@ -20,55 +21,43 @@ const admincolumnsName = ref([
 ]);
 const adminStore = useAdminStore();
 
-const datapagination = computed(() => adminStore.Product_data);
+const datapagination = computed(() => adminStore.alladmins);
 
-const paginationdata = pagination(datapagination, 5);
+const paginationdata = pagination(datapagination, 6);
 
-// onBeforeMount(() => {
-//   adminStore.resourse("admins");
-
-//   adminStore
-//     .fetchproduct()
-//     .then(() => {
-//       console.log("Data fetched successfully:", adminStore.Product_data);
-//     })
-//     .catch((error) => {
-//       console.error("Error fetching data:", error);
-//     });
-// });
-
-// watch(() => route.fullPath, () => {
-//   adminStore.resourse("admins");
-//   adminStore.fetchproduct();
-// });
 onBeforeMount(() => {
   adminStore.fetchproduct();
 });
+function handleClick(id) {
+  const admin = adminStore.alladmins.find(c => c._id === id);
+  if (!admin) return;
+  adminStore.updateadminIdm(id, admin);
+    adminStore.fetchproduct();
 
-onMounted(() => {
-  console.log('Data fetched on mount:', adminStore.Product_data);
-});
-
-
+}
 </script>
 
 <template>
   <div class="text-center">
-    <Templatepage  :statusfetch="adminStore.status" :length="adminStore.datalength" >
+    <Templatepage
+      :statusfetch="adminStore.status"
+      :length="adminStore.datalength"
+    >
       <template #partone>
         <Pagetitle title="Admins" />
       </template>
       <template #parttwo>
         <div class="d-flex justify-end bg-success">
-          <Primarybutton icon="mdi-plus" title="Add New Admin" />
+          <Addnewadmin />
         </div>
       </template>
       <template #partthree>
         <Table
           :columns="admincolumnsName"
           :tableData="paginationdata.paginationitem.value"
-          icon2="mdi-trash-can-outline"
-          titleicon2="Delete"
+          icon1="mdi-account-outline"
+          titleicon1="Make customer"
+          @click="handleClick"
         />
       </template>
       <template #partfour>

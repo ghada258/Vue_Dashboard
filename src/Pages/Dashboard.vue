@@ -1,7 +1,4 @@
 <script setup>
-import Test from './ImageuploadProduct.vue';
-
-
 import Card from '../components/Card.vue';
 import Chart from '../components/Chart.vue';
 import Pagetitle from '../components/Pagetitle.vue';
@@ -23,9 +20,9 @@ import Pagetitle from '../components/Pagetitle.vue';
         <v-sheet width="100%"   class="text-start bg-success" >
             <div class="d-flex">
       <Chart :data="[60,40]":title="'Available Products'"/>
-    <Chart :data="[60,40]":title="'Available Products'"/>
-    <Chart :data="[60,40]":title="'Available Products'"/>
-    <Chart :data="[60,40]":title="'Available Products'"/>
+      <Chart :data="[60,40]":title="'Available Products'"/>
+      <Chart :data="[60,40]":title="'Available Products'"/>
+      <Chart :data="[60,40]":title="'Available Products'"/>
     </div>              
    </v-sheet>
    

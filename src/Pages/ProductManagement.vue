@@ -73,8 +73,7 @@ onBeforeMount(() => {
 
 <template >
   <div class="text-center">
-    <Templatepage :statusfetch="productStore.status" :length="productStore.dataLength " 
->
+    <Templatepage :statusfetch="productStore.status" :length="productStore.dataLength " :title="'No Product found.'" >
       <template #partone>
         <Pagetitle title="Product Management" />
       </template>
@@ -98,18 +97,15 @@ onBeforeMount(() => {
           titleicon1="Edit"
           icon2="mdi-trash-can-outline"
           titleicon2="Delete"
-        nofilterdata="/no product.svg"
-        titlenodata=" No products available"
           @click="handleClick"
           @delete="handeldelete"
+          nosearch="No product match your search"
+          imgsearch="/no product.svg"
         />
       </template>
       <template #partfour>
-        <Paginationtable
-          :totalpage="paginationdata.totalpage"
-          v-model:page="paginationdata.page"
-          :itemperpage="paginationdata.itemperpage"
-        />
+               <Paginationtable :totalpage="paginationdata.totalpage.value" v-model:page="paginationdata.page.value" :itemperpage="paginationdata.itemperpage"  />
+
       </template>
     </Templatepage>
   </div>

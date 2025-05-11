@@ -13,6 +13,7 @@ import AllOrders from "../components/AllOrders.vue";
 import MainLayout from "../Layout/MainLayout.vue";
 import AuthLayout from "../Layout/AuthLayout.vue";
 import AddProductForm from "../components/AddProductForm.vue";
+import Addnewadmin from "../Pages/Addnewadmin.vue";
 
 
 const routes = [

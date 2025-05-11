@@ -42,6 +42,7 @@ function handleClick(id) {
     <Templatepage
       :statusfetch="adminStore.status"
       :length="adminStore.datalength"
+      :title="'No admin data found.' "
     >
       <template #partone>
         <Pagetitle title="Admins" />

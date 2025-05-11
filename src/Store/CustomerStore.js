@@ -15,7 +15,14 @@ export const useCustomerStore = defineStore('CRUD', () => {
   const fetchUsers = async (filter = {}) => {
      try{
     status.value="loading"
-    const response = await axios.get('/api/users', {
+          const params = new URLSearchParams();
+      if(filter.status) params.append('status',filter.status)
+        
+const url = params.toString()
+        ? `/api/users?${params}`
+        : `/api/users`;
+console.log(`/api/users?${params}`)
+    const response = await axios.get(url, {
       headers: { Authorization: `Bearer ${token}` },
     });
 
@@ -45,6 +52,10 @@ export const useCustomerStore = defineStore('CRUD', () => {
     return null; 
   }
 };
+
+
+
+
 
   // by id update product
   // const updatedataitem = async (id, user) => {
@@ -86,7 +97,7 @@ export const useCustomerStore = defineStore('CRUD', () => {
   //
 
   return {
-    fetchUsers,status,datalength,alldata,fetchCustomerById 
+    fetchUsers,status,datalength,alldata,fetchCustomerById ,status
   };
 });
 

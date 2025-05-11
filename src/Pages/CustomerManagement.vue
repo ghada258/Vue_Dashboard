@@ -1,7 +1,7 @@
 <script setup>
 import Paginationtable from '../components/Paginationtable.vue';
 import Table from '../components/Table.vue';
-import { onBeforeMount, onMounted, ref, watch} from 'vue'; 
+import { onBeforeMount, onMounted, ref, watch,computed} from 'vue'; 
 import Templatepage from '../components/Templatepage.vue';
 import Pagetitle from '../components/Pagetitle.vue';
 import Search from '../components/Search.vue';
@@ -10,10 +10,22 @@ import Filter from '../components/Filter.vue';
 import { useCustomerStore } from '../Store/CustomerStore';
 import {useFilterCode} from '../Store/Searchcode'
 import { usePagination } from '../Store/Pagination';
+const customerstore=useCustomerStore()
+const fields = ["firstName", "lastName", "status"];
+
 const searchterm=ref('')
 const Filterterm=ref('')
 // const container = ref(null)
-    
+    const filteredData=useFilterCode(
+  computed(() => customerstore.alldata),
+  searchterm,
+  fields,Filterterm
+
+);
+
+
+const paginationdata = usePagination(filteredData, 5);
+
 const Customercolumns = ref([
     {name:'_id',label:'Id'},
     { name: 'firstName', label: 'First Name'},
@@ -25,36 +37,39 @@ const Customercolumns = ref([
     { name:'Action',label:'Action'},
     
   ]);
+  const filteroption = ref([
+  { name: "", title: "All" },
+  { name: "vip", title: "vip" },
+  { name: "inactive", title: "inactive" },
+  { name: "active", title: "active" },
+  { name: "Blocked", title: "Blocked" },
+]);
 
-const customerstore=useCustomerStore()
 
 onBeforeMount(() => {
   console.log('fetched');
   customerstore.fetchUsers();
 });
 onMounted(() => {
-  console.log('Data fetched on mount:', customerstore.Product_data);
+  console.log('Data fetched on mount:', customerstore.alldata);
 });
 
-// const field=['Status','Customer_Name','Email','Phone_Number']
-// const  filtercustomer=useFilterCode(customerstore.Customer_data,searchterm,field,Filterterm)
-// const  paginationdata=pagination(filtercustomer,8)
-// watch([searchterm,Filterterm],()=>{
-//   paginationdata.page.value = 1;
-// })
- 
-// const filteroption = ref([
-// { name: '', title: 'All' },
-//   {name:'Vip',title:'Vip'},
-//   {name:'Active',title:'Active'},
-//   {name:'Inactive',title:'Inactive'},
-//   {name:'Blocked',title:'Blocked'},
-// ]);
+watch([searchterm, Filterterm], () => {
+    paginationdata.page.value = 1;
+});
+function handleClick(id) {
+  const user = customerstore.alldata.find(c => c._id === id);
+  if (!user) return;
+  customerstore.updateadminIdm(id, admin);
+    customerstore.fetchproduct();
+
+}
+
 </script>
 
 <template >
   
-    <Templatepage :statusfetch="customerstore.status" :length="customerstore.datalength " nofilterdata="/no product.svg"  titlenodata=" No Customers available">
+    <Templatepage :statusfetch="customerstore.status" :length="customerstore.datalength ":title="'No Customer found.' ">
         <template #partone>
             <Pagetitle title="Customer Management"/>
         </template>
@@ -67,12 +82,12 @@ onMounted(() => {
         </template>
       <template #partthree>
      
-        <Table :columns="Customercolumns" :tableData="customerstore.alldata" icon1="mdi-account-lock-outline" titleicon1="Make Admin" nofilterdata="/no-order 1.svg" titlenodata=" No Customer match your search....."
-        icon2="mdi-block-helper" titleicon2="Block" />
+        <Table :columns="Customercolumns" :tableData="paginationdata.paginationitem.value" icon1="mdi-account-lock-outline" titleicon1="Make Admin" nosearch="No Customer match your search"
+        icon2="mdi-block-helper" titleicon2="Block" imgsearch="/no-order 1.svg" @click="handleClick"/>
        
       </template>
       <template #partfour>
-        <!-- <Paginationtable :totalpage="paginationdata.totalpage.value" v-model:page="paginationdata.page.value" :itemperpage="paginationdata.itemperpage" /> -->
+        <Paginationtable :totalpage="paginationdata.totalpage.value" v-model:page="paginationdata.page.value" :itemperpage="paginationdata.itemperpage" />
       </template>
     </Templatepage>
 

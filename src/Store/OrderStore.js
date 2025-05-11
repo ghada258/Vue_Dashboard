@@ -9,9 +9,12 @@ export const useOrderStore = defineStore('CRUD', () => {
   const alldata = ref([]);
  
   // variable for data by id
-  const dataitem = ref([]);
-    const status=ref("idel");
+  const status=ref("idel");
   const datalength=ref(0)
+  const totalRevenue = ref(0);
+  const totalOrders = ref(0);
+  const newProducts = ref(0);
+  const newCustomers = ref(0);
   //filter and get all data
   const fetchOrders = async (filter = {}) => {
   try {
@@ -29,6 +32,15 @@ export const useOrderStore = defineStore('CRUD', () => {
       totalPriceOrder: order.totalPriceOrder,
       status: order.status,
     }));
+
+     console.log('Response Data:', response.data);
+
+
+     totalRevenue.value = response.data.totalRevenue;
+     console.log('totalRevenue.value:', totalRevenue.value);
+      totalOrders.value = response.data.NumberOfOrders;
+      newProducts.value = response.data.newProduct;
+      newCustomers.value = response.data.newCustomers;
 
     datalength.value = alldata.value.length;
     status.value = "success";
@@ -54,7 +66,12 @@ export const useOrderStore = defineStore('CRUD', () => {
 };
 
   return {
-    fetchOrders,status,datalength,alldata,fetchOrderById
+    fetchOrders,datalength,alldata,fetchOrderById,fetchOrders,
+    status,
+    totalRevenue,
+    totalOrders,
+    newProducts,
+    newCustomers,
   };
 });
 

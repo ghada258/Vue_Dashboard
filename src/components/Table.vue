@@ -97,17 +97,17 @@ const deleteitem=function(e){
                   'text-success bg-error  ': item[col.name] === 'Blocked'||item[col.name] === 'Cancelled',
                   ' text-success bg-lightGray ': item[col.name] === 'Active'||item[col.name] === 'Arrived',
                   'text-success bg-warning  ': item[col.name] === 'Vip'||item[col.name] === 'shipping',
-                  'text-success bg-blocked  ': item[col.name] === 'Inactive'  
+                  'text-success bg-blocked  ': item[col.name] === 'inactive'  
                 }"
               >
                 {{ item[col.name] }}
               </span>
             </template>
-            <template v-else-if="col.name === 'Status'">
+            <template v-else-if="col.name === 'status'">
               <span
                 :class="{
-                  'text-primary': item[col.name] === 'Inactive',
-                  'bg-primary': item[col.name] === 'Inactive',
+                  'text-primary': item[col.name] === 'inactive',
+                  'bg-primary': item[col.name] === 'inactive',
                 }"
               >
                 {{ item[col.name] }}

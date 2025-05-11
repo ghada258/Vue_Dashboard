@@ -8,8 +8,7 @@
     <div class="d-flex flex-column" style="width: 50%; gap: 10px">
       <div
         class="text-start py-2 pl-5 pr-5 rounded-lg bg-white"
-        style="border: solid 1px #80ccf9"
-      >
+        style="border: solid 1px #80ccf9">
         <Pagetitle :title="titlepage" />
       </div>
 
@@ -467,8 +466,8 @@ onMounted(() => {
 
   if (id) {
     // حالة Edit
-    productStore.fetchproductbyid(id).then(() => {
-      initialData.value = productStore.Product_data1;
+    productStore.fetchdataitem(id).then(() => {
+      initialData.value = productStore.Product_data;
       mood.value = "edit";
 
       // تعيين القيم

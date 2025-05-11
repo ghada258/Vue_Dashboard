@@ -3,13 +3,12 @@ import { defineStore } from 'pinia';
 import { ref } from 'vue';
 
 export const useProductStore = defineStore('CRUD', () => {
-  const productsdata = ref([]);     // بسّميه products عشان واضح
-  const product = ref(null);    // عنصر واحد لو جايب detail
+  const productsdata = ref([]);     
+  const product = ref(null);    
   const status = ref('idle');   
   const dataLength = ref(0);
   const token ='  eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InNhbWFAZ21haWwuY29tIiwiaWQiOiI2ODFmODY0MTk0ODQ2NTcyMmRmNTIyNzUiLCJyb2xlIjoibWFuZ2VyIiwiaWF0IjoxNzQ2OTA4MTg2LCJleHAiOjE3NDcwODA5ODZ9.rEsjup23ZmEuRSn3CmI6upwLDn6vp0adJcv_v48J0fI';
 
-  // جلب المنتجات (مع فلتر اختيار category)
   async function fetchProducts(filter = {}) {
     status.value = 'loading';
     try {

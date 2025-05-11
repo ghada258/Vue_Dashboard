@@ -31,7 +31,7 @@ const props = defineProps({
     type: String,
     required: false,
   },
-  nofilterdata:{
+  nosearch:{
     type: String,
 required:true
   },titlenodata:{
@@ -40,7 +40,10 @@ required:true
   },action:{
     type: String,
     required: false,
-  },
+  },imgsearch:{
+    type:String,
+    required:true
+  }
 });
 // const clonedata=ref(props.tableData.map(r=>({...r})))
 const selectrole = ["Pendding", "arrived","canceled"];
@@ -208,9 +211,8 @@ function deleteitem(item) {
     <td :colspan="columns.length" class="text-center pa-8 bg-success ">
 
   
-            <img  :src="nofilterdata" class="pt-10"/>
-        <v-item-title class="d-block text-primary font-weight-bold text-h5 pt-5">
-{{ titlenodata}}        </v-item-title>
+            <img  :src="imgsearch" class="pt-10"/>
+        <v-item-title class="d-block text-primary font-weight-bold text-h5 pt-5">{{ nosearch }}</v-item-title>
 
 </td>
   </tr>

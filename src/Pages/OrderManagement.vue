@@ -48,7 +48,7 @@ onMounted(() => {
 
 <template>
   <div class="text-center ">
-        <Templatepage :statusfetch="ordertStore.status" :length="ordertStore.datalength " nofilterdata="/no product.svg"  titlenodata=" No Orders available">
+        <Templatepage :statusfetch="ordertStore.status" :length="ordertStore.datalength " :title="'No Order found.'" >
 
         <template #partone>
             <Pagetitle title="Order Management"/>
@@ -62,7 +62,7 @@ onMounted(() => {
 
           </template>
       <template #partthree>
-        <Table :columns="OrdercolumnsName" :tableData="ordertStore.alldata"nofilterdata="/no-order.svg" titlenodata=" No order match your search....."/>
+        <Table :columns="OrdercolumnsName" :tableData="ordertStore.alldata"  nosearch="No order match your search" imgsearch="/no order.png"/>
       </template>
       <template #partfour>
         

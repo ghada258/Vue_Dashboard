@@ -54,13 +54,16 @@
                 "
               >
                 <slot name="empty">
-                  <img :src="nofilterdata" class="pt-10" />
-                  <v-item-title
-                    class="d-block text-primary font-weight-bold text-h5 pt-5"
-                    style="cursor: default"
-                  >
-                    {{ titlenodata }}
-                  </v-item-title>
+                         <div class="d-flex flex-column justify-content-center align-items-center">
+  <img src="/no product.svg" class="mx-auto" width="70%" />
+  <v-item-title
+    class="d-block text-primary font-weight-bold text-h5 pt-5 text-center"
+    style="cursor: default"
+  >
+{{   title}}  
+</v-item-title>
+</div>
+  
                 </slot>
               </div>
             </template>
@@ -74,7 +77,21 @@
                 align-items: center;
               "
             >
-              <slot name="error"> </slot>
+              <slot name="error">
+         <div class="d-flex flex-column justify-content-center align-items-center">
+  <img src="/user (3).png" class="mx-auto" width="50%" />
+  <v-item-title
+    class="d-block text-primary font-weight-bold text-h5 pt-5 text-center"
+    style="cursor: default"
+  >
+    Please reload the page or try again.
+  </v-item-title>
+</div>
+              
+          
+            
+              
+              </slot>
             </div>
           </template>
         </v-sheet>
@@ -104,6 +121,10 @@ const props = defineProps({
     type: String,
     required: true,
   },
+  title:{
+    type:String,
+    required:true
+  }
 });
 </script>
 

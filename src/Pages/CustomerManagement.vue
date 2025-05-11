@@ -9,7 +9,7 @@ import Primarybutton from '../components/Primarybutton.vue';
 import Filter from '../components/Filter.vue';
 import { useCustomerStore } from '../Store/CustomerStore';
 import {useFilterCode} from '../Store/Searchcode'
-import { pagination } from '../Store/Pagination';
+import { usePagination } from '../Store/Pagination';
 const searchterm=ref('')
 const Filterterm=ref('')
 // const container = ref(null)

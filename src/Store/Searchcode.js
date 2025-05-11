@@ -1,33 +1,31 @@
 import { computed } from 'vue';
 
-export function useFilterCode(sourceData, searchterm, fields) {
+export function useFilterCode(sourceData, searchTerm, fields) {
   return computed(() => {
-    const serachtext = searchterm.value.trim().toLowerCase();
-    console.log(serachtext);
-    const result = [...sourceData.value]; // data copy
+    // نص البحث محوّل لصغير وبدون مسافات زايدة
+    const searchText = searchTerm.value.trim().toLowerCase();
 
-    console.log(result);
-    console.log(searchterm);
-    console.log(fields[1]);
-
-    if (!serachtext) {
+    // لو مفيش نص بحث، رجّع البيانات كاملة
+    if (!searchText) {
       return sourceData.value;
     }
-    if (searchterm) {
-      //  هلف علي الداتا  اللي هي المنتجات واخد منها الفيلد وبعدين اعمل  check
-      return result.filter(item => {
-        const allvalue = fields
-          .map(field => {
-            let value = item[field];
-            if (value && typeof value === 'object') {
-              return String(value.name).toLowerCase();
-            }
 
-            return String(value || '').toLowerCase();
-          })
-          .join(' ');
-        return allvalue.includes(serachtext);
-      });
-    }
+    // فلترة العناصر على حسب الحقول المحددة
+    return sourceData.value.filter(item => {
+      // نجمع قيم الحقول كلها في سترينج واحد
+      const combined = fields
+        .map(field => {
+          const val = item[field];
+          // لو القيمة object و فيها name
+          if (val && typeof val === 'object') {
+            return String(val.name).toLowerCase();
+          }
+          return String(val || '').toLowerCase();
+        })
+        .join(' ');
+
+      // نرجّع العنصر لو السترينج المشترك يحتوي نص البحث
+      return combined.includes(searchText);
+    });
   });
 }

@@ -1,6 +1,7 @@
 <template>
   <v-form
     @submit.prevent="submitForm"
+
     class="py-6 d-flex bg-success"
     style="gap: 16px; padding: 0 88px"
   >
@@ -8,7 +9,8 @@
     <div class="d-flex flex-column" style="width: 50%; gap: 10px">
       <div
         class="text-start py-2 pl-5 pr-5 rounded-lg bg-white"
-        style="border: solid 1px #80ccf9">
+        style="border: solid 1px #80ccf9"
+      >
         <Pagetitle :title="titlepage" />
       </div>
 
@@ -224,60 +226,46 @@
             Product Images
           </h1>
           <div class="d-flex" style="gap: 10px">
-            <div
-              class="add-image-box"
-              v-for="(_, index) in placeholders"
-              :key="index"
-            >
-              <div
-                v-if="store.Statuses[index] === 'Loading'"
-                class="image-placeholder"
-              >
-                <v-progress-circular indeterminate color="primary" />
-              </div>
-              <div
-                v-else-if="store.Statuses[index] === 'error'"
-                class="image-placeholder"
-              >
-                <v-icon size="36" @click="retryUploadHandler(index)"
-                  >mdi-reload</v-icon
-                >
-                <span>try again</span>
-              </div>
-              <div
-                v-else-if="store.Statuses[index] === 'Success'"
-                class="image-placeholder"
-              >
-                <v-img
-                  :src="store.images[index]"
-                  alt="Selected Image"
-                  cover
-                  width="100%"
-                  height="100%"
-                />
+    <div
+  v-for="(_, index) in placeholders"
+  :key="index"
+  class="add-image-box"
+>
+  <!-- loading -->
+  <div v-if="store.Statuses[index] === 'Loading'" class="image-placeholder">
+    <v-progress-circular indeterminate />
+  </div>
 
-                <v-icon
-                  size="24"
-                  @click="deleteImageHandler(index)"
-                  style="
-                    position: absolute;
-                    top: 2px;
-                    right: 2px;
-                    cursor: pointer;
-                  "
-                >
-                  mdi-close-circle
-                </v-icon>
-              </div>
-              <v-file-input
-                v-else
-                accept="image/png, image/jpeg, image/bmp"
-                hide-input
-                prepend-icon="mdi-plus"
-                class="icon-only-file-input"
-                @change="(e) => onFileChange(e, index)"
-              />
-            </div>
+  <!-- error -->
+  <div v-else-if="store.Statuses[index] === 'error'" class="image-placeholder">
+    <v-icon @click="retryUploadHandler(index)">mdi-reload</v-icon>
+    <span>try again</span>
+  </div>
+
+  <!-- success -->
+  <div v-else-if="store.Statuses[index] === 'Success'" class="image-placeholder">
+    <v-img
+      :src="store.images[index]"
+      alt="Selected Image"
+      cover
+      width="100%"
+      height="100%"
+    />
+    <v-icon @click="deleteImageHandler(index)" class="delete-btn">
+      mdi-close-circle
+    </v-icon>
+  </div>
+
+  <!-- default (idle) -->
+  <v-file-input
+    v-else
+  hide-input
+  prepend-icon="mdi-plus"
+  class="icon-only-file-input"
+  @change="onFileChange($event, index)"
+  />
+</div>
+
           </div>
         </v-card-text>
       </div>
@@ -368,7 +356,6 @@
           width="48%"
           height="56px"
           :disabled="!isFormValid"
-          
         />
       </div>
     </div>
@@ -376,7 +363,7 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted, watchEffect } from "vue";
+import { ref, computed, onMounted, watchEffect, nextTick } from "vue";
 import { useImageUploadStore } from "../Store/ImageUploadStore.js";
 import Pagetitle from "../components/Pagetitle.vue";
 import { useProductStore } from "../Store/Productstore.js";
@@ -387,6 +374,8 @@ const sizes = ["S", "M", "L", "XL", "XXL"];
 const genders = ["women", "men"];
 const categories = ref(["cloth", "shoes", "glasses", "bags"]);
 const SelectedCategory = ref(null);
+
+
 const Product_Name = ref("");
 const Brand_Name = ref("");
 const Product_Material = ref("");
@@ -461,37 +450,36 @@ watchEffect(() => {
 });
 
 // fetch product for edit
-onMounted(() => {
+onMounted(async() => {
   const id = route.params.id;
 
   if (id) {
-    // حالة Edit
-    productStore.fetchdataitem(id).then(() => {
-      initialData.value = productStore.Product_data;
+    console.log(id)
+     const prod=await productStore.fetchProductById(id)
       mood.value = "edit";
+       initialData.value = prod;            
+    
+    Product_Name.value     = prod.name;
+    Brand_Name.value       = prod.brand;
+    Product_Material.value = prod.material;
+    colors.value           = Array.isArray(prod.color) ? prod.color : [];
+    selectedSizes.value    = Array.isArray(prod.sizeRange)
+                              ? prod.sizeRange.map(s => sizes.indexOf(s))
+                              : [];
+    selectedGenders.value  = Array.isArray(prod.gender)
+                              ? prod.gender.map(g => genders.indexOf(g))
+                              : [];
+    SelectedCategory.value = prod.category?.name || null;
+    Product_Price.value    = prod.price;
+    Stock.value            = prod.inStock;
 
-      // تعيين القيم
-      Product_Name.value = initialData.value.name;
-      Brand_Name.value = initialData.value.brand;
-      Product_Material.value = initialData.value.material;
-      colors.value = initialData.value.color;
-      selectedSizes.value = initialData.value.sizeRange.map((s) =>
-        sizes.indexOf(s)
-      );
-      selectedGenders.value = initialData.value.gender.map((g) =>
-        genders.indexOf(g)
-      );
-      SelectedCategory.value = initialData.value.category.name;
-      Product_Price.value = initialData.value.price;
-      Stock.value = initialData.value.inStock;
+    
 
-      // إعداد الصور القديمة
-      const urls = Array.isArray(initialData.value.images)
+ const urls = Array.isArray(initialData.value.images)
         ? initialData.value.images.map((x) =>
             typeof x === "string" ? x : x.url
           )
         : [];
-      // امتلاء المصفوفات مع ملء الخانات الفارغة بـ null
       const fullImages = [...urls];
       while (fullImages.length < placeholders.length) fullImages.push(null);
       store.images.splice(0, placeholders.length, ...fullImages);
@@ -499,9 +487,7 @@ onMounted(() => {
       const fullStatuses = urls.map(() => "Success");
       while (fullStatuses.length < placeholders.length) fullStatuses.push(null);
       store.Statuses.splice(0, placeholders.length, ...fullStatuses);
-    }); // <-- نهاية then
   } else {
-    // حالة Add: نفرغ الصور والحالات
     store.images.splice(
       0,
       store.images.length,
@@ -512,11 +498,10 @@ onMounted(() => {
       store.Statuses.length,
       ...Array(placeholders.length).fill(null)
     );
-  }
-});
-
+  }})
 // handlers
 function onFileChange(e, idx) {
+  
   store.handleFileUpload(e, idx);
 }
 function deleteImageHandler(idx) {
@@ -525,9 +510,7 @@ function deleteImageHandler(idx) {
 function retryUploadHandler(idx) {
   store.retryUpload(idx);
 }
-//function to check any change to update data
 const hasproductchange = () => {
-  //object data
   const newpayload = {
     name: Product_Name.value,
     brand: Brand_Name.value,
@@ -539,13 +522,10 @@ const hasproductchange = () => {
     category: SelectedCategory.value,
     gender: selectedGenders.value.map((i) => genders[i]),
     images: store.images.filter((img) => img != null),
+    
   };
-  //object data
+console.log(newpayload)
   const oldpayload = initialData.value;
-  // must change to  string
-  //علشان مفارنه الاوبجيكت قيل التحويل هترجع عالطول  false
-  // لما بتتحول بيرجع كده "{name: , age }"
-  //كده رجعوا string  by use json.stringify
 
   return (
     JSON.stringify({
@@ -563,17 +543,14 @@ const hasproductchange = () => {
       ),
     }) !== JSON.stringify(newpayload)
   );
-  // لي عملت كده رغم اه اصلا كان  object  علشان ممكن يكون ال  object  اللي خزنته ورجعلي من الباك في ال  category:{id:  , name:}
-  // وال  payload new  كان   قيمه واحده
-};
-//لو مش بيساوي بعض يعني حصل تغير يبعت بقا ساعتها  true
 
-// submit
+};
+
 async function submitForm() {
   if (!isFormValid.value) return;
 
   const payload = {
-    name: Product_Name.value,
+     name: Product_Name.value,
     brand: Brand_Name.value,
     price: Product_Price.value,
     color: [...colors.value],
@@ -585,32 +562,26 @@ async function submitForm() {
     images: store.images.filter((img) => img != null),
   };
     console.log(payload)
-    
+
 
   try {
-          console.log('here rn')
 
     if (mood.value === "edit") {
-            console.log('here edit')
 
       if (!hasproductchange()) {
         console.log("no data change to update");
         return;
       }
 
-      await productStore.updateproductdata(route.params.id, payload);
+      await productStore.updateProduct(route.params.id, payload);
       console.log("updated data sucessfully");
     } else {
-      console.log('here')
-      await productStore.adddataitem(payload)
-      // await productStore.adddataitem(payload);
-            console.log('here ana ')
-
+      await productStore.addProduct(payload);
+      console.log("here ana ");
     }
     console.log("all data get");
 
-    // return field empty after add new product
-    Product_Name.value = "";
+     Product_Name.value = "";
     Brand_Name.value = "";
     Product_Material.value = "";
     colors.value = [];
@@ -621,9 +592,15 @@ async function submitForm() {
     Stock.value = "";
     store.images.splice(0);
     store.Statuses.splice(0);
+
+// … بعد تنظيف القيم:
+
+
+
+
   } catch (error) {
-  console.error(error);
-}
+    console.error(error);
+  }
 }
 </script>
 
@@ -659,4 +636,15 @@ async function submitForm() {
   justify-content: center;
   padding: 0;
 }
+.delete-btn{
+  position: absolute;
+  top: 4px;       /* عدّلي حسب المسافة اللي تحبيها من الأعلى */
+  right: 4px;     /* عدّلي حسب المسافة من اليمين */
+  z-index: 10;    /* أعلى من الـ v-img */
+  cursor: pointer;
+  background: rgba(255,255,255,0.6); /* خلفية نصف شفافة لتحسين الرؤية */
+  border-radius: 50%;
+  padding: 2px;
+}
+
 </style>

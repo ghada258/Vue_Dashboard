@@ -1,12 +1,11 @@
 <template>
   <div class="text-center"v-if="totalpage > 1">
-    <v-pagination
-    :model-value="page"
-      :length="totalpage"
-      :total-visible="itemperpage"
-      @update:modelValue="updatePage"
-
-    ></v-pagination>
+ <v-pagination
+  :model-value="page"
+  :length="totalpage"
+  :total-visible="itemperpage"
+  @update:model-value="updatePage"  
+></v-pagination>
   </div>
 </template>
 
@@ -32,4 +31,3 @@ function updatePage(val){
   
 }
 </script>
-

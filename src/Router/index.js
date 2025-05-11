@@ -41,7 +41,9 @@ const routes = [
       { path: 'OrderDetails/:_id', component: OrderDetails },
       { path: 'AllOrders/:_id', component: AllOrders },
       { path:'EditProduct/:id',name:'EditProduct',component:AddProductForm,props:true},
-      {path:'/AddProduct',name:'AddProduct',component:AddProduct,props:true },
+      {path:'AddProduct',name:'AddProduct',component:AddProduct,props:true },
+            {path:'newadmin',nane:'Addnewadmin',component:Addnewadmin}
+      
       
       
     ]

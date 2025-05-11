@@ -9,7 +9,7 @@ import Filter from '../components/Filter.vue';
 import { useOrderStore } from '../Store/OrderStore';
 import Search from '../components/Search.vue';
 import {useFilterCode} from '../Store/Searchcode'
-import {pagination} from '../Store/Pagination'
+import {usePagination} from '../Store/Pagination'
 const searchterm=ref('')
 const Filterterm=ref('')
  const OrdercolumnsName = ref([

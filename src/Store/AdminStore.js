@@ -16,8 +16,7 @@ export const useAdminStore = defineStore('CRUD', () => {
         headers: { Authorization: `Bearer ${token}` }
       });
       const list = res.data.data.Admins;
-      alladmins.value = list.filter(c => c.role === 'admin');
-
+      alladmins.value = list.filter(c => c.role !== 'manager');
       datalength.value = list.length;
       status.value = 'success';
     } catch {

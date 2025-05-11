@@ -15,45 +15,67 @@
         </v-sheet>
       </div>
       <div class="mb-1">
-
         <v-sheet
           width="100%"
           style="height: 470px"
-          class="text-start bg-success "
+          class="text-start bg-success"
         >
-          <template v-if="statusfetch==='loading'">
-                        <slot name="Loading">  
-
-    <div style="height: 100%; display: flex; justify-content: center; align-items: center; flex-direction: column;">
-
-              <div style="height: 100%; display: flex; justify-content: center; align-items: center;" >
-                       <v-progress-circular indeterminate color="primary" size="50" width="5" />
-                   </div>
-                             </div>
-
-                            </slot>
-        </template>
-            <template v-else-if="statusfetch==='success'">
-        <template v-if="length>0">
-         <slot name="partthree">TITLE THREE PART</slot>
-
-        </template>
-        <template v-else>
-              <div style="height: 100%; display: flex; justify-content: center; align-items: center;">
-
-          <slot name="empty">  <img  :src="nofilterdata" class="pt-10"/>
-        <v-item-title class="d-block text-primary font-weight-bold text-h5 pt-5" style="cursor:default;">
-{{ titlenodata}}    
-        </v-item-title>
-      </slot>
-          </div>
-        </template>
-        </template>
-        <template v-else>
-              <div style="height: 100%; display: flex; justify-content: center; align-items: center;">
-           <slot name="error">
-           </slot>
+          <template v-if="statusfetch === 'loading'">
+            <slot name="Loading">
+              <div
+                style="
+                  height: 100%;
+                  display: flex;
+                  justify-content: center;
+                  align-items: center;
+                  flex-direction: column;
+                "
+              >
+                <v-progress-circular
+                  indeterminate
+                  color="primary"
+                  size="50"
+                  width="5"
+                />
               </div>
+            </slot>
+          </template>
+          <template v-else-if="statusfetch === 'success'">
+            <template v-if="length > 0">
+              <slot name="partthree">TITLE THREE PART</slot>
+            </template>
+            <template v-else>
+              <div
+                style="
+                  height: 100%;
+                  display: flex;
+                  justify-content: center;
+                  align-items: center;
+                "
+              >
+                <slot name="empty">
+                  <img :src="nofilterdata" class="pt-10" />
+                  <v-item-title
+                    class="d-block text-primary font-weight-bold text-h5 pt-5"
+                    style="cursor: default"
+                  >
+                    {{ titlenodata }}
+                  </v-item-title>
+                </slot>
+              </div>
+            </template>
+          </template>
+          <template v-else>
+            <div
+              style="
+                height: 100%;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+              "
+            >
+              <slot name="error"> </slot>
+            </div>
           </template>
         </v-sheet>
       </div>
@@ -67,25 +89,22 @@
 </template>
 
 <script setup>
-const props=defineProps({
-  statusfetch:{
+const props = defineProps({
+  statusfetch: {
     type: String,
-        default: 'loading', 
-
-  },length:{
-        type: Number,
-            default: 0, 
-
-
-  },  nofilterdata:{
-    type: String,
-required:true
-  },titlenodata:{
-    type: String,
-    required:true
-  }
+    default: "loading",
+  },
+  length: {
+    type: Number,
+    default: 0,
   
-})
+
+  },
+  titlenodata: {
+    type: String,
+    required: true,
+  },
+});
 </script>
 
 <style lang="scss" scoped></style>

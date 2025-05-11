@@ -8,7 +8,7 @@ import Table from "../components/Table.vue";
 import { computed, watch } from "vue";
 // import templateeeror from "../components/Templateerror.vue";
 import { useAdminStore } from "../Store/AdminStore";
-import { pagination } from "../Store/Pagination";
+import { usePagination } from "../Store/Pagination";
 import { ref, onBeforeMount, onMounted } from "vue";
 import Addnewadmin from "./Addnewadmin.vue";
 const admincolumnsName = ref([
@@ -23,7 +23,7 @@ const adminStore = useAdminStore();
 
 const datapagination = computed(() => adminStore.alladmins);
 
-const paginationdata = pagination(datapagination, 6);
+const paginationdata = usePagination(datapagination, 6);
 
 onBeforeMount(() => {
   adminStore.fetchproduct();

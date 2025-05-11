@@ -11,12 +11,10 @@ export const useImageUploadStore = defineStore('imageUpload', ()=>{
     images.value[index] = null;
     Statuses.value[index] = "idle"; // Reset status to idle when image is deleted
   }
-    
 const retryUpload = (index) => {
-  Statuses.value[index] = "Loading"; 
   images.value[index] = null;
+  Statuses.value[index] = "idle";    // بدل "Loading"
 };
-
     const handleFileUpload = async (event, index) => {
       const file = event.target.files[0];
     

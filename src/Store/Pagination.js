@@ -1,15 +1,30 @@
-import { computed, ref } from "vue"
+import { computed, ref, watch } from "vue";
 
-export function pagination(filterorder,numb){
-    const page=ref(1)// page start 
-    const itemperpage=numb
-    const totalpage=computed(()=>{
-     return Math.ceil(filterorder.value.length/itemperpage)
-    })
-    const paginationitem=computed(()=>{
-     const start=(page.value-1)*itemperpage;
-     const end=start+itemperpage
-     return filterorder.value.slice(start,end)
-    })
-    return{totalpage,page,itemperpage,paginationitem}
+export function usePagination(filterorder, numb) {
+  const page = ref(1);
+  const itemperpage = numb;
+
+  const list = computed(() => filterorder.value ?? []);
+
+  const totalpage = computed(() => {
+    const len = list.value.length;
+    return Math.max(1, Math.ceil(len / itemperpage));
+  });
+
+  const paginationitem = computed(() => {
+    const start = (page.value - 1) * itemperpage;
+
+    return list.value.slice(start, start + itemperpage);
+  });
+
+  watch(list, () => {
+    page.value = 1;
+  });
+
+  return {
+    totalpage,
+    page,
+    itemperpage,
+    paginationitem
+  };
 }

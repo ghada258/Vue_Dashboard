@@ -10,7 +10,7 @@ import Filter from "../components/Filter.vue";
 import { useProductStore } from "../Store/Productstore";
 import Search from "../components/Search.vue";
 import { useFilterCode } from "../Store/Searchcode";
-import { pagination } from "../Store/Pagination";
+import { usePagination } from "../Store/Pagination";
 import router from "../Router";
 
 const PoducrcolumnsName = ref([
@@ -39,52 +39,41 @@ const filteroption = ref([
 
 const fields = ["name", "category", "brand"];
 const filteredData = useFilterCode(
-  computed(() => productStore.Product_data),
+  computed(() => productStore.productsdata),
   searchterm,
   fields
 );
 
-const paginationdata = pagination(filteredData, 5);
+const paginationdata = usePagination(filteredData, 5);
 
 // console.log(item.id)
-function handleClick(item) {
-  console.log("click", item);
-  router.push({
-    name: "EditProduct",
-    params: { id: item },
-  });
+function handleClick(id) {
+  router.push({ name: "EditProduct", params: { id } });
 }
 function handeldelete(id) {
   // call functin delete from orderstore
   console.log("delete", id);
   productStore
-    .deleteproduct(id)
+    .deleteProduct(id)
     .then(() => console.log("deleted  from parent successfully"));
 }
 
 watch([searchterm, Filterterm], () => {
-  productStore.fetchproduct({ category: Filterterm.value }).then(() => {
+  productStore.fetchProducts({ category: Filterterm.value }).then(() => {
     paginationdata.page.value = 1;
-    console.log("Fetched Data:", productStore.Product_data);
-    console.log(searchterm.value);
   });
 });
 
 onBeforeMount(() => {
-  productStore.fetchproduct();
+  productStore.fetchProducts();
 });
-onMounted(async()=>{
-await nextTick()
-  console.log(container.value.parentNode)
 
 
-}
-)
 </script>
 
 <template >
   <div class="text-center">
-    <Templatepage :statusfetch="productStore.status" :length="productStore.datalength " nofilterdata="/no product.svg"  titlenodata=" No products available"
+    <Templatepage :statusfetch="productStore.status" :length="productStore.dataLength " 
 >
       <template #partone>
         <Pagetitle title="Product Management" />
@@ -109,15 +98,16 @@ await nextTick()
           titleicon1="Edit"
           icon2="mdi-trash-can-outline"
           titleicon2="Delete"
-        
+        nofilterdata="/no product.svg"
+        titlenodata=" No products available"
           @click="handleClick"
           @delete="handeldelete"
         />
       </template>
       <template #partfour>
         <Paginationtable
-          :totalpage="paginationdata.totalpage.value"
-          v-model:page="paginationdata.page.value"
+          :totalpage="paginationdata.totalpage"
+          v-model:page="paginationdata.page"
           :itemperpage="paginationdata.itemperpage"
         />
       </template>

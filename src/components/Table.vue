@@ -1,3 +1,4 @@
+
 <script setup>
 import { ref } from "vue";
 import { defineProps } from "vue";
@@ -45,17 +46,15 @@ required:true
 const selectrole = ["Pendding", "arrived","canceled"];
 //  when have 2 emit  بنعرفهم سوا 
 //  نعمل الداله بتاعتهم وبعدين ال  emit لكل واحد فيهم 
-const emit =defineEmits(["click"],['delete']);
-const clickitem=function (e) {
-  const id=e.id;
-  emit ("click",id );
-  console.log(e.id);
-};
-const deleteitem=function(e){
-  const id=e.id
-  emit ('delete',id)
-  console.log(e.id);
 
+const emit = defineEmits(["click", "delete"]);
+
+function clickitem(item) {
+  emit("click", item._id);
+}
+
+function deleteitem(item) {
+  emit("delete", item._id);
 }
 
 
@@ -83,7 +82,7 @@ const deleteitem=function(e){
       <tbody >
         <template v-if="tableData.length > 0">
 
-        <tr  v-for="item in tableData" :key="item.Id" class="custom-row" >
+        <tr  v-for="item in tableData" :key="item._id" class="custom-row" >
           <td
             v-for="col in columns"
             :key="col.Id"
@@ -167,8 +166,7 @@ const deleteitem=function(e){
                   v-if="icon1"
                   size="24"
                   :key="item.Id"
-                  @click="clickitem(item)" 
-
+               @click="clickitem(item)"
                   class="text-primary cursor-pointer"
               
                   >{{ icon1 }}</v-icon
@@ -185,7 +183,7 @@ const deleteitem=function(e){
                   v-if="icon2"
                   size="24"
                   :key="item.Id"
-                  @click="deleteitem(item)" 
+               @click="deleteitem(item)"
 
                   class="text-error cursor-pointer"
                   >{{ icon2 }}</v-icon

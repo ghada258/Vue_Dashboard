@@ -9,7 +9,7 @@ import Filter from '../components/Filter.vue';
 import { useOrder } from '../Store/OrderStore';
 import Search from '../components/Search.vue';
 import {useFilterCode} from '../Store/Searchcode'
-import {pagination} from '../Store/Pagination'
+import {usePagination} from '../Store/Pagination'
 const searchterm=ref('')
 const Filterterm=ref('')
 const ordertStore=useOrder()

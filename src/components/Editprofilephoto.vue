@@ -16,7 +16,7 @@ image:{
     <div class="text-center  ">
         <div class="img">
             <v-avatar size="150" >
-    <v-img :src='props.image'/>
+     <v-img src="/public/images/admin_login.svg"/>
  </v-avatar>
  <!-- <v-btn  icon
  small color="primary" class="edit" 

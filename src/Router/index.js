@@ -13,7 +13,6 @@ import AllOrders from "../components/AllOrders.vue";
 import MainLayout from "../Layout/MainLayout.vue";
 import AuthLayout from "../Layout/AuthLayout.vue";
 import AddProductForm from "../components/AddProductForm.vue";
-import Addnewadmin from "../Pages/Addnewadmin.vue";
 
 
 const routes = [
@@ -24,7 +23,8 @@ const routes = [
       {
         path: '',
         component: Login
-      }
+      },
+     { path: 'Login', component: Login },
     ]
   },
   {
@@ -38,11 +38,13 @@ const routes = [
       { path: 'admins', component:Admins,meta:{endpoint:'admins'} },
       { path: 'profile', component: Profile },
       { path: 'AddProduct', component: AddProduct },
-      { path: 'OrderDetails', component: OrderDetails },
-      { path: 'AllOrders', component: AllOrders },
+      { path: 'OrderDetails/:_id', component: OrderDetails },
+      { path: 'AllOrders/:_id', component: AllOrders },
       { path:'EditProduct/:id',name:'EditProduct',component:AddProductForm,props:true},
       {path:'AddProduct',name:'AddProduct',component:AddProduct,props:true },
-      {path:'newadmin',nane:'Addnewadmin',component:Addnewadmin}
+            {path:'newadmin',nane:'Addnewadmin',component:Addnewadmin}
+      
+      
       
     ]
   },

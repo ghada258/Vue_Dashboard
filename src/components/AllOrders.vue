@@ -1,5 +1,21 @@
 <script setup>
-  import Order_ForAllOrder from './Order_ForAllOrder.vue';
+import { onMounted, ref } from 'vue';
+import { useCustomerStore } from '../Store/CustomerStore';
+import Order_ForAllOrder from './Order_ForAllOrder.vue';
+import { useRoute } from 'vue-router';
+ const route = useRoute();
+ const CustomerId = route.params._id;
+
+const Customer = ref(null);
+const Customerstore = useCustomerStore()
+
+
+onMounted(async () => {
+  const result = await Customerstore.fetchCustomerById (CustomerId);
+  Customer.value = result;
+  console.log(result);
+})
+
 </script>
 <template>
     <div class="mt-2 d-flex justify-center align-center " style="gap: 16px;">
@@ -8,12 +24,12 @@
           <v-card-text class="pa-0 d-flex flex-column" style="gap: 10px; height: 680px; overflow:scroll; ">
             <div class="d-flex justify-space-between" style="gap: 30px;">
               <h1 class="text-primary font-weight-regular" style="font-size: 24px;">Orders and Dates</h1>
-              <h1 class="text-primary font-weight-regular mr-16" style="font-size: 24px;"> 3 Orders</h1>
+              <h1 class="text-primary font-weight-regular mr-16" style="font-size: 24px;">   {{ Customer?.orders?.length || 0 }} Orders</h1>
             </div>
             <div class="d-flex flex-column" style="gap: 10px;">
-              <Order_ForAllOrder/>
-              <Order_ForAllOrder/>
-              <Order_ForAllOrder/>
+             <template v-if="Customer && Customer.orders">
+               <Order_ForAllOrder v-for="order in Customer.orders" :key="order._id" :item="order" />
+             </template>
             </div>
             
            

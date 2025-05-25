@@ -1,10 +1,13 @@
 <script setup>
-import HelloWorld from './components/HelloWorld.vue'
+import { RouterView } from "vue-router";
+import{useRoute} from "vue-router"
+  const route=useRoute()
 </script>
 
-
-  <template>
-
+<template>
+  <RouterView :key="route.name" />
 </template>
+<style lang="scss" scoped>
 
+</style>
 

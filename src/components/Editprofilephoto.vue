@@ -18,11 +18,7 @@ image:{
             <v-avatar size="150" >
      <v-img src="/public/images/admin_login.svg"/>
  </v-avatar>
- <!-- <v-btn  icon
- small color="primary" class="edit" 
- >
-    <v-icon size="18">mdi-pencil</v-icon>
- </v-btn> -->
+
     </div>
         </div>
  

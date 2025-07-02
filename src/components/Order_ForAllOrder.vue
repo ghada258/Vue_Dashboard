@@ -1,49 +1,74 @@
 <script setup>
 const props = defineProps({
-  item: Object
+  item: Object,
 });
 </script>
 
 <template>
-  <div class="rounded-xl" style="width: 100%; background-color: #F3F3F3; padding: 8px; border: 1px solid #80CCF9;">
-    <h6 class="text-primary font-weight-regular ml-15 mb-1" style="font-size: 24px;">
-      Date: {{ new Date(item.createdAt).toLocaleDateString() }}
-    </h6>
+  <div class="rounded-lg pa-0" style="width: 100%; border: 1px solid #80ccf9">
+    <div class="d-flex justify-space-between my-3 px-5">
+      <h6 class="text-primary font-weight-regular" style="font-size: 20px">
+        Date: {{ new Date(item.createdAt).toLocaleDateString() }}
+      </h6>
+
+      <h6 class="text-primary font-weight-regular" style="font-size: 20px">
+        {{ item.items.length }} Items
+      </h6>
+      <h6 class="text-primary font-weight-regular" style="font-size: 20px">
+        Total Price :{{ item.totalPriceOrder }} EGP
+      </h6>
+    </div>
 
     <v-slide-group show-arrows>
-      <v-slide-group-item v-for="productItem in item.items" :key="productItem._id">
-        <div class="rounded-lg pa-3 d-flex flex-column justify-center  align-center ml-3"
-             style="background-color: #D7D7D7; gap: 8px; width: 250px;">
-          <span style="font-weight: 400; font-size: 18px; color: #333333;">
+      <v-slide-group-item
+        v-for="productItem in item.items"
+        :key="productItem._id"
+      >
+        <div
+          class="rounded-lg pa-3 d-flex flex-column justify-center align-center mx-4 bg-success"
+          style="gap: 8px; width: 260px"
+        >
+          <span style="font-weight: 400; font-size: 18px; color: #333333">
             {{ productItem.product.name }}
           </span>
           <v-img
             :src="productItem.product.images[0]"
             alt="Product Image"
-            class="image-placeholder rounded-xl"
+            class="image-placeholder"
+            style="border-radius: 8px"
             cover
-            height="100"
-            width="150"
+            height="150"
+            width="260"
           />
-          <div class="d-flex" style="gap: 3px;">
-            <v-chip variant="outlined" class="pa-3 bg-white" style="border: 2px solid #C0C0C0;">{{ productItem.size }}</v-chip>
-            <v-chip variant="outlined" class="pa-3 bg-white" style="border: 2px solid #C0C0C0;">{{ productItem.color }}</v-chip>
-            <v-chip variant="outlined" class="pa-3 bg-white" style="border: 2px solid #C0C0C0;">{{ productItem.quantity }}</v-chip>
-            <v-chip variant="outlined" class="pa-3 bg-white" style="border: 2px solid #C0C0C0;">
-              {{ productItem.totalPriceItems }}$
+          <div class="d-flex" style="gap: 4px">
+            <v-chip
+              variant="outlined"
+              class="pa-3 bg-white"
+              style="border: 1px solid #c0c0c0"
+              >{{ productItem.size }}</v-chip
+            >
+            <v-chip
+              variant="outlined"
+              class="pa-3 bg-white"
+              style="border: 1px solid #c0c0c0"
+              >{{ productItem.color }}</v-chip
+            >
+            <v-chip
+              variant="outlined"
+              class="pa-3 bg-white"
+              style="border: 1px solid #c0c0c0"
+              >{{ productItem.quantity }}</v-chip
+            >
+            <v-chip
+              variant="outlined"
+              class="pa-3 bg-white"
+              style="border: 1px solid #c0c0c0"
+            >
+              {{ productItem.totalPriceItems }} EGP
             </v-chip>
           </div>
         </div>
       </v-slide-group-item>
     </v-slide-group>
-
-    <div class="d-flex justify-space-between mt-1 px-5">
-      <h6 class="text-primary font-weight-regular ml-10" style="font-size: 24px;">
-        Price: ${{ item.totalPriceOrder }}
-      </h6>
-      <h6 class="text-primary font-weight-regular mr-10" style="font-size: 24px;">
-        {{ item.items.length }} Items
-      </h6>
-    </div>
   </div>
 </template>

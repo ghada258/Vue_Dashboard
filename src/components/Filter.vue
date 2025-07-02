@@ -42,7 +42,6 @@ const props = defineProps({
 });
 async function onselect(item) {
   console.log(item.name);
-  // console.log(item.title)
 
   emit("update:modelValue", item.name);
 }

@@ -7,7 +7,7 @@ import Admins from '../Pages/Admins.vue'
 import Profile from '../Pages/Profile.vue'
 import Errorpage from '../Pages/Errorpage.vue'
 import Login from '../Pages/Login.vue'
-import AddProduct from "../Pages/AddProduct.vue";
+// import AddProduct from "../Pages/AddProduct.vue";
 import OrderDetails from "../Pages/OrderDetails.vue";
 import AllOrders from "../components/AllOrders.vue";
 import MainLayout from "../Layout/MainLayout.vue";
@@ -38,11 +38,11 @@ const routes = [
       { path: 'product-management', component:ProductManagement,meta:{endpoint:'products'} },
       { path: 'admins', component:Admins,meta:{endpoint:'admins'} },
       { path: 'profile', component: Profile },
-      { path: 'AddProduct', component: AddProduct },
+      // { path: 'AddProduct', component: AddProduct },
       { path: 'OrderDetails/:_id', component: OrderDetails },
       { path: 'AllOrders/:_id', component: AllOrders },
       { path:'EditProduct/:id',name:'EditProduct',component:AddProductForm,props:true},
-      {path:'AddProduct',name:'AddProduct',component:AddProduct,props:true },
+      {path:'AddProduct',name:'AddProduct',component:AddProductForm,props:true },
             {path:'newadmin',nane:'Addnewadmin',component:Addnewadmin}
       
       

@@ -1,11 +1,9 @@
 <template>
   <v-form
     @submit.prevent="submitForm"
-
     class="py-6 d-flex bg-success"
     style="gap: 16px; padding: 0 88px"
   >
-    <!-- القسم الأيمن: بيانات عامة وأحجام ولون -->
     <div class="d-flex flex-column" style="width: 50%; gap: 10px">
       <div
         class="text-start py-2 pl-5 pr-5 rounded-lg bg-white"
@@ -211,7 +209,6 @@
       </div>
     </div>
 
-    <!-- القسم الأيسر: الصور، الفئة، السعر والمخزون -->
     <div class="d-flex flex-column" style="width: 50%; gap: 10px">
       <!-- Product Images -->
       <div
@@ -226,46 +223,54 @@
             Product Images
           </h1>
           <div class="d-flex" style="gap: 10px">
-    <div
-  v-for="(_, index) in placeholders"
-  :key="index"
-  class="add-image-box"
->
-  <!-- loading -->
-  <div v-if="store.Statuses[index] === 'Loading'" class="image-placeholder">
-    <v-progress-circular indeterminate />
-  </div>
+            <div
+              v-for="(_, index) in placeholders"
+              :key="index"
+              class="add-image-box"
+            >
+              <!-- loading -->
+              <div
+                v-if="store.Statuses[index] === 'Loading'"
+                class="image-placeholder"
+              >
+                <v-progress-circular indeterminate />
+              </div>
 
-  <!-- error -->
-  <div v-else-if="store.Statuses[index] === 'error'" class="image-placeholder">
-    <v-icon @click="retryUploadHandler(index)">mdi-reload</v-icon>
-    <span>try again</span>
-  </div>
+              <!-- error -->
+              <div
+                v-else-if="store.Statuses[index] === 'error'"
+                class="image-placeholder"
+              >
+                <v-icon @click="retryUploadHandler(index)">mdi-reload</v-icon>
+                <span>try again</span>
+              </div>
 
-  <!-- success -->
-  <div v-else-if="store.Statuses[index] === 'Success'" class="image-placeholder">
-    <v-img
-      :src="store.images[index]"
-      alt="Selected Image"
-      cover
-      width="100%"
-      height="100%"
-    />
-    <v-icon @click="deleteImageHandler(index)" class="delete-btn">
-      mdi-close-circle
-    </v-icon>
-  </div>
+              <!-- success -->
+              <div
+                v-else-if="store.Statuses[index] === 'Success'"
+                class="image-placeholder"
+              >
+                <v-img
+                  :src="store.images[index]"
+                  alt="Selected Image"
+                  cover
+                  width="100%"
+                  height="100%"
+                />
+                <v-icon @click="deleteImageHandler(index)" class="delete-btn">
+                  mdi-close-circle
+                </v-icon>
+              </div>
 
-  <!-- default (idle) -->
-  <v-file-input
-    v-else
-  hide-input
-  prepend-icon="mdi-plus"
-  class="icon-only-file-input"
-  @change="onFileChange($event, index)"
-  />
-</div>
-
+              <!-- default (idle) -->
+              <v-file-input
+                v-else
+                hide-input
+                prepend-icon="mdi-plus"
+                class="icon-only-file-input"
+                @change="onFileChange($event, index)"
+              />
+            </div>
           </div>
         </v-card-text>
       </div>
@@ -349,7 +354,8 @@
         class="d-flex mt-2"
         style="gap: 10px; justify-content: space-between"
       >
-        <Secondarybutton title="Cancel" width="48%" height="56px" />
+      
+        <Secondarybutton title="Cancel" width="48%" height="56px" to="/product-management"/>
         <Primarybutton
           from="myform"
           :title="buttontitle"
@@ -370,12 +376,16 @@ import { useProductStore } from "../Store/Productstore.js";
 import { useRoute } from "vue-router";
 import Secondarybutton from "../components/Secondarybutton.vue";
 import Primarybutton from "../components/Primarybutton.vue";
+import { useRouter } from "vue-router";
+import { usetoast } from "../Store/Toast.js";
+
 const sizes = ["S", "M", "L", "XL", "XXL"];
 const genders = ["women", "men"];
 const categories = ref(["cloth", "shoes", "glasses", "bags"]);
+
 const SelectedCategory = ref(null);
 
-
+const router = useRouter();
 const Product_Name = ref("");
 const Brand_Name = ref("");
 const Product_Material = ref("");
@@ -388,6 +398,8 @@ const productStore = useProductStore();
 const route = useRoute();
 const initialData = ref({});
 const mood = ref("add");
+const toast = usetoast();
+const { showtoast } = toast;
 //  change name of button
 const buttontitle = computed(() =>
   mood.value === "edit" ? "Update changes" : "Add Product"
@@ -397,7 +409,10 @@ const titlepage = computed(() =>
   mood.value === "edit" ? "Edit Product" : "Add New Product"
 );
 
-// call store to upload image and return url
+// const backToProducts =()=>{
+
+// }
+
 const store = useImageUploadStore();
 
 //  number of square photo place
@@ -450,43 +465,40 @@ watchEffect(() => {
 });
 
 // fetch product for edit
-onMounted(async() => {
+onMounted(async () => {
   const id = route.params.id;
+  productStore.fetchProducts();
 
   if (id) {
-    console.log(id)
-     const prod=await productStore.fetchProductById(id)
-      mood.value = "edit";
-       initialData.value = prod;            
-    
-    Product_Name.value     = prod.name;
-    Brand_Name.value       = prod.brand;
+    console.log(id);
+    const prod = await productStore.fetchProductById(id);
+    mood.value = "edit";
+    initialData.value = prod;
+
+    Product_Name.value = prod.name;
+    Brand_Name.value = prod.brand;
     Product_Material.value = prod.material;
-    colors.value           = Array.isArray(prod.color) ? prod.color : [];
-    selectedSizes.value    = Array.isArray(prod.sizeRange)
-                              ? prod.sizeRange.map(s => sizes.indexOf(s))
-                              : [];
-    selectedGenders.value  = Array.isArray(prod.gender)
-                              ? prod.gender.map(g => genders.indexOf(g))
-                              : [];
+    colors.value = Array.isArray(prod.color) ? prod.color : [];
+    selectedSizes.value = Array.isArray(prod.sizeRange)
+      ? prod.sizeRange.map((s) => sizes.indexOf(s))
+      : [];
+    selectedGenders.value = Array.isArray(prod.gender)
+      ? prod.gender.map((g) => genders.indexOf(g))
+      : [];
     SelectedCategory.value = prod.category?.name || null;
-    Product_Price.value    = prod.price;
-    Stock.value            = prod.inStock;
+    Product_Price.value = prod.price;
+    Stock.value = prod.inStock;
 
-    
+    const urls = Array.isArray(initialData.value.images)
+      ? initialData.value.images.map((x) => (typeof x === "string" ? x : x.url))
+      : [];
+    const fullImages = [...urls];
+    while (fullImages.length < placeholders.length) fullImages.push(null);
+    store.images.splice(0, placeholders.length, ...fullImages);
 
- const urls = Array.isArray(initialData.value.images)
-        ? initialData.value.images.map((x) =>
-            typeof x === "string" ? x : x.url
-          )
-        : [];
-      const fullImages = [...urls];
-      while (fullImages.length < placeholders.length) fullImages.push(null);
-      store.images.splice(0, placeholders.length, ...fullImages);
-
-      const fullStatuses = urls.map(() => "Success");
-      while (fullStatuses.length < placeholders.length) fullStatuses.push(null);
-      store.Statuses.splice(0, placeholders.length, ...fullStatuses);
+    const fullStatuses = urls.map(() => "Success");
+    while (fullStatuses.length < placeholders.length) fullStatuses.push(null);
+    store.Statuses.splice(0, placeholders.length, ...fullStatuses);
   } else {
     store.images.splice(
       0,
@@ -498,12 +510,13 @@ onMounted(async() => {
       store.Statuses.length,
       ...Array(placeholders.length).fill(null)
     );
-  }})
+  }
+});
 // handlers
 function onFileChange(e, idx) {
-  
   store.handleFileUpload(e, idx);
 }
+
 function deleteImageHandler(idx) {
   store.deleteimage(idx);
 }
@@ -522,9 +535,8 @@ const hasproductchange = () => {
     category: SelectedCategory.value,
     gender: selectedGenders.value.map((i) => genders[i]),
     images: store.images.filter((img) => img != null),
-    
   };
-console.log(newpayload)
+  console.log(newpayload);
   const oldpayload = initialData.value;
 
   return (
@@ -543,14 +555,13 @@ console.log(newpayload)
       ),
     }) !== JSON.stringify(newpayload)
   );
-
 };
 
 async function submitForm() {
   if (!isFormValid.value) return;
 
   const payload = {
-     name: Product_Name.value,
+    name: Product_Name.value,
     brand: Brand_Name.value,
     price: Product_Price.value,
     color: [...colors.value],
@@ -561,27 +572,35 @@ async function submitForm() {
     gender: selectedGenders.value.map((i) => genders[i]),
     images: store.images.filter((img) => img != null),
   };
-    console.log(payload)
-
+  console.log(payload);
 
   try {
-
     if (mood.value === "edit") {
-
       if (!hasproductchange()) {
         console.log("no data change to update");
+        showtoast("No data change to update", "lightGray");
+
         return;
       }
 
       await productStore.updateProduct(route.params.id, payload);
+      showtoast("Product updated successfully!", "rowOdd");
+
       console.log("updated data sucessfully");
+
+      productStore.fetchProducts();
+      router.push("/product-management");
     } else {
       await productStore.addProduct(payload);
+      showtoast("Product added successfully!", "rowOdd");
+      router.push("/product-management");
+      productStore.fetchProducts();
+
       console.log("here ana ");
     }
     console.log("all data get");
 
-     Product_Name.value = "";
+    Product_Name.value = "";
     Brand_Name.value = "";
     Product_Material.value = "";
     colors.value = [];
@@ -592,12 +611,6 @@ async function submitForm() {
     Stock.value = "";
     store.images.splice(0);
     store.Statuses.splice(0);
-
-// … بعد تنظيف القيم:
-
-
-
-
   } catch (error) {
     console.error(error);
   }
@@ -636,15 +649,14 @@ async function submitForm() {
   justify-content: center;
   padding: 0;
 }
-.delete-btn{
+.delete-btn {
   position: absolute;
-  top: 4px;       /* عدّلي حسب المسافة اللي تحبيها من الأعلى */
-  right: 4px;     /* عدّلي حسب المسافة من اليمين */
-  z-index: 10;    /* أعلى من الـ v-img */
+  top: 4px;
+  right: 4px;
+  z-index: 10;
   cursor: pointer;
-  background: rgba(255,255,255,0.6); /* خلفية نصف شفافة لتحسين الرؤية */
+  background: rgba(255, 255, 255, 0.6);
   border-radius: 50%;
   padding: 2px;
 }
-
 </style>

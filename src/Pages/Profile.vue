@@ -12,25 +12,21 @@ import Primarybutton from '../components/Primarybutton.vue';
 
 </style>
 <template>
-<div class="contentTitle bg-success">
+<div class="contentTitle ">
   <Pagetitle title="Profile"/>
 </div>
 
-  <div class=" content bg-success  " >
+  <div class="content" >
  
     <v-row >
       <v-col order="6" cols="5 " >
-        <v-sheet class=" pa-0 ma-0  bg-success ">
+        <v-sheet class="pa-0 ma-0">
           <Formfield/>
-          <Primarybutton title="Update Change" style="height: 56px;width: 400px; margin-top: 24px; margin-bottom: 20px;"/>
+          <!-- <Primarybutton title="Update Change" style="height: 56px;width: 400px; margin-top: 24px; margin-bottom: 20px;"/> -->
 
         </v-sheet>
       </v-col>
-      <v-col order="12"  cols="5" >
-        <v-sheet class="  pa-0">
-       <DropList/>
-        </v-sheet>
-      </v-col>
+     
       <v-col order="1"  cols="2"    class="d-flex  ">
         <v-sheet  >
           <Editprofilephoto image="profile.jpg" />

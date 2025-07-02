@@ -27,7 +27,9 @@ error:  '#D23616', // red
           warning:   '#29D5EF', // لبني غامق vip bg
           neutral:   '#333333', // text-black
           lightGray: '#007DC3', // لبني  active bg
-          blocked:'#818181'//اللون بتاع ال  inactibve
+          blocked:'#818181',//اللون بتاع ال  inactibve
+          rowOdd:'#29B020',// update and new data 
+          
         },
       },
     },

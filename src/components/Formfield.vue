@@ -24,7 +24,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <v-form class="d-flex flex-column bg-success" style="gap:24px;"> 
+  <v-form class="d-flex flex-column  " style="gap:24px;"> 
     <label for="firstname" class="font-weight-semibold text-neutral text-body-1">First Name</label>
     <v-text-field
       id="firstname"
@@ -34,6 +34,7 @@ onMounted(() => {
       variant="outlined"
       placeholder="Enter Your First Name"
       required
+    disabled
     />
 
     <label for="lastName" class="font-weight-semibold text-neutral text-body-1">Last Name</label>
@@ -45,6 +46,7 @@ onMounted(() => {
       variant="outlined"
       placeholder="Enter Your Last Name"
       required
+      disabled
     />
 
     <label for="role" class="font-weight-semibold text-neutral text-body-1">Role</label>

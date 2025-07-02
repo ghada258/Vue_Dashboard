@@ -128,7 +128,7 @@ onMounted(async () => {
       <h1 class="text-primary font-weight-regular mb-4 " style="font-size: 24px;">Pricing and Status</h1>
        <div class="d-flex justify-space-between" style="gap:20px">
 
-        <div class="d-flex flex-column" style="width: 50%;">
+        <div class="d-flex flex-column" style="width: 50%; ">
         <label class="my-label text-body-1 font-weight-semibold "style="margin-bottom: -16px;" >Order Price</label>
         <v-text-field
             ref="orderPrice"
@@ -140,22 +140,22 @@ onMounted(async () => {
           />
       </div>
 
-      <div class="d-flex flex-column" style="width: 50%;">
-        <label class="my-label text-body-1 font-weight-semibold "style="margin-bottom: -16px; background-color: white;" >Status</label>
-        <v-text-field
-            ref="status"
-            v-model="status"
-            style="font-weight: 600;"
-            variant="outlined"
-            required
-          />
-      </div>
+      <div class="d-flex flex-column" style="width: 50%; display: flex;">
+      <label class="my-label text-body-1 font-weight-semibold" style="margin-bottom: -16px; background-color: white;">Status</label>
+      <v-select
+        v-model="status"
+        :items="['Canceled', 'Pending', 'Delivered', 'Shipping']"
+        style="font-weight: 600;"
+        variant="outlined"
+        required
+        placeholder="Select status"
+      />
+      
+    </div>
+    <v-btn color="primary" style="margin-top: 30px; height: 55px;"  @click="updateStatus">Update Status</v-btn>
     </div> 
     </v-card-text>
       </div>
-     
-      
-
     </div>
 
   </form>  

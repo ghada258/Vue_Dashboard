@@ -3,61 +3,92 @@ import { defineStore } from 'pinia';
 import { ref } from 'vue';
 
 export const useCustomerStore = defineStore('CRUD', () => {
-  const token ="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InNhbWFzaW1vQGdtYWlsLmNvbSIsImlkIjoiNjgxNmFlZTdhYjE3ZTFkZGJjZWFlZGM4Iiwicm9sZSI6Im1hbmdlciIsImlhdCI6MTc0Njg0MzQzOCwiZXhwIjoxNzQ3MDE2MjM4fQ.ZXrBFN7_zIaQxo4qjz9S7QTrzHt0YIyWhyYDVo6m3s8";
-  //variable for all data
-  
-  const alldata = ref([]);
+  const token =
+'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InNhbWFAZ21haWwuY29tIiwiaWQiOiI2ODFmODY0MTk0ODQ2NTcyMmRmNTIyNzUiLCJyb2xlIjoibWFuZ2VyIiwiaWF0IjoxNzQ3MTc5NTIzLCJleHAiOjE3NDczNTIzMjN9.pLArF06Ck_QiYJnWk0u17UVYUKcgHXFRpmkGcVSuLTc  //variable for all data'
+
+  const alldata = ref([]);// all customer 
   // variable for data by id
-  const dataitem = ref([]);
-    const status=ref("idel");
-  const datalength=ref(0)
+  const dataitem = ref([]);// one customer 
+  const status = ref('idel');// status
+  const datalength = ref(0);// number of all customer 
   //filter and get all data
   const fetchUsers = async (filter = {}) => {
-     try{
-    status.value="loading"
-          const params = new URLSearchParams();
-      if(filter.status) params.append('status',filter.status)
-        
-const url = params.toString()
-        ? `/api/users?${params}`
-        : `/api/users`;
-console.log(`/api/users?${params}`)
-    const response = await axios.get(url, {
-      headers: { Authorization: `Bearer ${token}` },
-    });
+    try {
+      status.value = 'loading';
+      const params = new URLSearchParams();
+      if (filter.status) params.append('status', filter.status);
 
-    alldata.value = response.data.data.users
-    datalength.value=response.data.data.users.length
-        status.value="success"
-                    return response;
+      const url = params.toString() ? `/api/users?${params}` : `/api/users`;
 
+      const res = await axios.get(url, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      alldata.value = res.data.data.users.filter(p => !p.isDeleted);
 
-  }catch(error){
-    console.error('Error fetching admins:', error);
-            status.value="error"
-  }   
+      datalength.value = res.data.userCount;
+      status.value = 'success';
+      return res;
+    } catch (err) {
+     console.error('Error fetching products:', err);
+      status.value = 'error';
+      throw err;
+    }
   };
-  
- const fetchCustomerById = async (_id) => {
-  try {
-    const response = await axios.get(`/api/users/${_id}`, {
+
+  const fetchCustomerById = async _id => {
+    try {
+      const res = await axios.get(`/api/users/${_id}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      status.value = 'success';
+      console.log('Fetched user:', res.data.data.user);
+      return res.data.data.user;
+    } catch (err) {
+      console.error('Failed to fetch user by ID:', err);
+      status.value = 'error';
+      return null;
+    }
+  };
+
+  const updateuserbyid = async (id, user) => {
+    const currentRole = user.role;
+    const firstName = user.firstName;
+    const lastName = user.lastName;
+    const email = user.email;
+    const password = 'pasword123';
+    const newRole = currentRole === 'customer' ? 'admin' : 'customer';
+
+    try {
+      await axios.patch(
+        `/api/users/${id}`,
+        {
+          role: newRole,
+          firstName: firstName,
+          lastName: lastName,
+          email: email,
+          password: password,
+        },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  async function deleteuser(id) {
+    const res = await axios.delete(`/api/users/${id}`, {
       headers: { Authorization: `Bearer ${token}` },
     });
-    status.value = "success";
-    console.log("Fetched user:", response.data.data.user);
-    return response.data.data.user;
-  } catch (err) {
-    console.error('Failed to fetch user by ID:', err);
-    status.value = "error";
-    return null; 
+          console.log("done1")
+
+    if (res.data.status === 'success') {
+      console.log("done2")
+      alldata.value = alldata.value.filter(p => p._id !== id);
+      datalength.value = alldata.value.length;
+      
+    }
+    return res;
   }
-};
-
-
-
-
-
-  // by id update product
   // const updatedataitem = async (id, user) => {
   //   const response = await axios.patch(`/api/Users/${id}`, user, {
   //     headers: {
@@ -93,12 +124,16 @@ console.log(`/api/users?${params}`)
   // };
   //
 
- 
   //
 
   return {
-    fetchUsers,status,datalength,alldata,fetchCustomerById ,status
+    fetchUsers,
+    status,
+    datalength,
+    alldata,
+    fetchCustomerById,
+    status,
+    updateuserbyid,
+    deleteuser,
   };
 });
-
-  

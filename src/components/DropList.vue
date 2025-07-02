@@ -1,5 +1,5 @@
 <template>
-  <v-form class=" d-flex flex-column bg-success" style="gap:24px;">  
+  <v-form class=" d-flex flex-column " style="gap:24px;">  
     <Pagetitle title="Setting"/>
 
     <label for="lang" class="font-weight-semibold  text-neutral text-body-1">Select Language</label>

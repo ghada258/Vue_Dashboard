@@ -8,7 +8,7 @@ import Table from "../components/Table.vue";
 import { computed, watch } from "vue";
 // import templateeeror from "../components/Templateerror.vue";
 import { useAdminStore } from "../Store/AdminStore";
-import { usePagination } from "../Store/Pagination";
+import { usePagination } from "../main/Pagination";
 import { ref, onBeforeMount, onMounted } from "vue";
 import Addnewadmin from "./Addnewadmin.vue";
 const admincolumnsName = ref([
@@ -29,11 +29,10 @@ onBeforeMount(() => {
   adminStore.fetchproduct();
 });
 function handleClick(id) {
-  const admin = adminStore.alladmins.find(c => c._id === id);
+  const admin = adminStore.alladmins.find((c) => c._id === id);
   if (!admin) return;
   adminStore.updateadminIdm(id, admin);
-    adminStore.fetchproduct();
-
+  adminStore.fetchproduct();
 }
 </script>
 
@@ -42,7 +41,7 @@ function handleClick(id) {
     <Templatepage
       :statusfetch="adminStore.status"
       :length="adminStore.datalength"
-      :title="'No admin data found.' "
+      :title="'No admin data found.'"
     >
       <template #partone>
         <Pagetitle title="Admins" />
@@ -56,8 +55,8 @@ function handleClick(id) {
         <Table
           :columns="admincolumnsName"
           :tableData="paginationdata.paginationitem.value"
-          icon1="mdi-account-outline"
-          titleicon1="Make customer"
+          icon1="mdi-delete"
+          titleicon1="Delete"
           @click="handleClick"
         />
       </template>

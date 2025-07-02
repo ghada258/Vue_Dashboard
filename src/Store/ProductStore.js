@@ -1,14 +1,15 @@
 import axios from 'axios';
 import { defineStore } from 'pinia';
 import { ref } from 'vue';
+import { usetoast } from './Toast';
 
 export const useProductStore = defineStore('CRUD', () => {
-  const productsdata = ref([]);     
-  const product = ref(null);    
-  const status = ref('idle');   
-  const dataLength = ref(0);
+  const productsdata = ref([]);   //all product   
+  const product = ref(null);    // one product 
+  const status = ref('idle');   // status 
+  const dataLength = ref(0);//  number of order 
   const token ='  eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InNhbWFAZ21haWwuY29tIiwiaWQiOiI2ODFmODY0MTk0ODQ2NTcyMmRmNTIyNzUiLCJyb2xlIjoibWFuZ2VyIiwiaWF0IjoxNzQ2OTA4MTg2LCJleHAiOjE3NDcwODA5ODZ9.rEsjup23ZmEuRSn3CmI6upwLDn6vp0adJcv_v48J0fI';
-
+const existingProduct=ref(0)
   async function fetchProducts(filter = {}) {
     status.value = 'loading';
     try {
@@ -22,9 +23,9 @@ export const useProductStore = defineStore('CRUD', () => {
         headers: { Authorization: `Bearer ${token}` },
       });
 
-      // خالي الـ deleted منها
       productsdata.value = res.data.data.products.filter(p => !p.isDeleted);
       dataLength.value = productsdata.value.length;
+      existingProduct.value=res.data.existingProduct
       status.value = 'success';
       return res;
     } catch (err) {
@@ -49,6 +50,7 @@ export const useProductStore = defineStore('CRUD', () => {
       headers: { Authorization: `Bearer ${token}` },
     });
     const updated = res.data.data.product;
+
     const idx = productsdata.value.findIndex(p => p._id === id);
     if (idx !== -1) productsdata.value[idx] = updated;
     return res;
@@ -84,7 +86,7 @@ export const useProductStore = defineStore('CRUD', () => {
   }
 
   return {
-    fetchProducts,productsdata,status,dataLength,deleteProduct,addProduct,updateProduct,fetchProductById,product
+    fetchProducts,productsdata,status,dataLength,deleteProduct,addProduct,updateProduct,fetchProductById,product,existingProduct
   
   };
 });

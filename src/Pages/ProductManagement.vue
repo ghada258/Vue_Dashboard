@@ -9,10 +9,12 @@ import Table from "../components/Table.vue";
 import Filter from "../components/Filter.vue";
 import { useProductStore } from "../Store/Productstore";
 import Search from "../components/Search.vue";
-import { useFilterCode } from "../Store/Searchcode";
-import { usePagination } from "../Store/Pagination";
+import { useFilterCode } from "../main/Searchcode";
+import { usePagination } from "../main/Pagination";
 import router from "../Router";
-
+import { usetoast } from "../Store/Toast";
+const toast=usetoast()
+ const {showtoast}=toast
 const PoducrcolumnsName = ref([
   { name: "_id", label: "Id" },
   { name: "images", label: "Image" },
@@ -23,10 +25,9 @@ const PoducrcolumnsName = ref([
   { name: "price", label: "Price" },
   { name: "Action", label: "Action" },
 ]);
-
+const itemperpage = ref(5);
 const productStore = useProductStore();
 const searchterm = ref("");
-
 
 const Filterterm = ref("");
 const filteroption = ref([
@@ -44,38 +45,41 @@ const filteredData = useFilterCode(
   fields
 );
 
-const paginationdata = usePagination(filteredData, 5);
+const paginationdata = usePagination(filteredData, itemperpage.value);
 
 // console.log(item.id)
-function handleClick(id) {
-  router.push({ name: "EditProduct", params: { id } });
+ function handleClick(id) {
+ router.push({ name: "EditProduct", params: { id } });
 }
-function handeldelete(id) {
-  // call functin delete from orderstore
+async function handeldelete(id) {
   console.log("delete", id);
-  productStore
-    .deleteProduct(id)
-    .then(() => console.log("deleted  from parent successfully"));
+ await  productStore.deleteProduct(id);
+   showtoast("Product removed successfully","rowOdd");
+
 }
+
+onMounted(() => {
+  productStore.fetchProducts();
+});
 
 watch([searchterm, Filterterm], () => {
   productStore.fetchProducts({ category: Filterterm.value }).then(() => {
     paginationdata.page.value = 1;
   });
 });
-
-onBeforeMount(() => {
-  productStore.fetchProducts();
-});
-
-
 </script>
 
-<template >
+<template>
   <div class="text-center">
-    <Templatepage :statusfetch="productStore.status" :length="productStore.dataLength " :title="'No Product found.'" >
+    <Templatepage
+      :statusfetch="productStore.status"
+      :length="productStore.dataLength"
+      :title="'No Product found.'"
+    >
       <template #partone>
+
         <Pagetitle title="Product Management" />
+        
       </template>
       <template #parttwo>
         <div class="d-flex bg-success">
@@ -87,6 +91,11 @@ onBeforeMount(() => {
             to="/AddProduct"
             @click="handleClickAddproduct"
           />
+          <!-- <div class="text-primary font-weight-bold text-h6 cursor-default">
+          <span >Total Orders: </span
+          >
+          {{ productStore.existingProduct }}
+        </div> -->
         </div>
       </template>
       <template #partthree>
@@ -101,11 +110,20 @@ onBeforeMount(() => {
           @delete="handeldelete"
           nosearch="No product match your search"
           imgsearch="/no product.svg"
+          :itemsPerPage="itemperpage"
+          :page="paginationdata.page.value"
+          modaltext="Are you sure you want to delete this product?"
         />
       </template>
       <template #partfour>
-               <Paginationtable :totalpage="paginationdata.totalpage.value" v-model:page="paginationdata.page.value" :itemperpage="paginationdata.itemperpage"  />
-
+        
+         
+        <Paginationtable
+          :totalpage="paginationdata.totalpage.value"
+          v-model:page="paginationdata.page.value"
+          :itemperpage="paginationdata.itemperpage"
+        />
+        
       </template>
     </Templatepage>
   </div>

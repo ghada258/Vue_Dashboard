@@ -15,17 +15,14 @@
 
   </template>
   
-  <script setup>//  use compostion api
+  <script setup>
   import { Doughnut } from 'vue-chartjs'
   import { Chart as ChartJS, Title, Tooltip, Legend, ArcElement } from 'chart.js'
-  // import chart and rename it = chartjs 
-  //Title  عنوان فو الرسمه
-  // tooltip  علشان لما اقف علي جزء يبينلي ده خاص ب اي 
-  //legend  شرح للالوان 
-  //arcelement  هو اللي بيرسم الدونت الداخلي
-  import { ref,computed } from 'vue'// import reactivity 
+
+
+  import { ref,computed } from 'vue' 
   
-  ChartJS.register(Title, Tooltip, Legend, ArcElement)// بعرف ان هستخدم الحاجات دي جو ال  chart 
+  ChartJS.register(Title, Tooltip, Legend, ArcElement)
    const props=defineProps({
     data:{
         type:Array,
@@ -36,7 +33,6 @@
     }
    })
   
-   // background color  يتحط في ال  rectivity  علشان ده طبيعه ال  chart library  معموله انها تاخدهم من ال datasets
  const chartData = computed(() => ({
   labels: ['Available', 'Unavailable'],
   datasets: [
@@ -47,7 +43,7 @@
     },
   ],
 }))
-  // انا سيباهم علشان لو حبينا في اي وقت   حبينا نزود  feature  ونخليهم true
+
   const chartOptions = ref({
     responsive: true,
     maintainAspectRatio: false,

@@ -14,10 +14,17 @@ export const useOrderStore = defineStore('CRUD', () => {
   const newProducts  = ref(0);
   const newCustomers = ref(0);
 
-  const fetchOrders = async () => {
+  const fetchOrders = async (filter={}) => {
+          status.value = 'loading';
+
     try {
-      status.value = 'loading';
-      const response = await axios.get('/api/orders', {
+            const params = new URLSearchParams();
+      if (filter.status) params.append('status', filter.status);
+      const url = params.toString()
+        ? `/api/orders?${params}`
+        : `/api/orders`;
+
+      const response = await axios.get(url, {
         headers: { Authorization: `Bearer ${token}` },
       });
 

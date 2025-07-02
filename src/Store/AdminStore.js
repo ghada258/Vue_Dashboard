@@ -3,7 +3,8 @@ import { defineStore } from 'pinia';
 import { ref } from 'vue';
 
 export const useAdminStore = defineStore('CRUD', () => {
-  const token ='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InNhbWFzaW1vQGdtYWlsLmNvbSIsImlkIjoiNjgxNmFlZTdhYjE3ZTFkZGJjZWFlZGM4Iiwicm9sZSI6Im1hbmdlciIsImlhdCI6MTc0NjgwNzg3NywiZXhwIjoxNzQ2OTgwNjc3fQ.jPoHmbDNC1MUnvf6JazIA_LCvsPGdxUhcUfLEqSDrA8';
+   const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InNhbWFAZ21haWwuY29tIiwiaWQiOiI2ODFmODY0MTk0ODQ2NTcyMmRmNTIyNzUiLCJyb2xlIjoibWFuZ2VyIiwiaWF0IjoxNzQ3Mjc2MDQzLCJleHAiOjE3NDc0NDg4NDN9.MvrzzJejWnqe6qnzwQwtQSZ8mfJOGt7uYpwAyB_uZYU";
+  
   const alladmins = ref([]);
   const adminId = ref([]);
   const status=ref("idel");
@@ -24,15 +25,11 @@ export const useAdminStore = defineStore('CRUD', () => {
     }
   };
 //update admin
-  const updateadminIdm = async (id, admin) => {
-
-    const currentRole = admin.role;
-    const newRole = currentRole === 'admin' ? 'customer' : 'admin';
+  const updateadminIdm = async (id) => {
 
     try {
-      await axios.patch(
+      await axios.delete(
         `/api/admins/${id}`,
-        { role: newRole },
         { headers: { Authorization: `Bearer ${token}` } }
       );
 
@@ -51,8 +48,10 @@ export const useAdminStore = defineStore('CRUD', () => {
 
     if (response.status === 201) {
       console.log('Product added successfully');
-      console.log(response.data);
       alladmins.value.push(response.data.data.Admins);
+            console.log(response.data);
+
+
     }
     return response;
   };
